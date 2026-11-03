@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUnidade } from "@/components/UnidadeProvider";
 
 type Equipamento = { id: string; patrimonio: string; tipo: string; fabricante: string; modelo: string; localizacao: string; status: string };
 type EventoReparo = { equipamentoId: string; tipo: string; data: string; criadoEm?: string };
@@ -54,6 +55,8 @@ export default function NovoHistoricoPage() {
   const [erro, setErro] = useState("");
 
   useEffect(() => {
+    if (!unidadeCarregada) return;
+
     const parametros = new URLSearchParams(window.location.search);
     const tipoUrl = parametros.get("tipo");
     if (TIPOS.some((item) => item.valor === tipoUrl)) setTipo(tipoUrl as TipoRegistro);
@@ -61,8 +64,8 @@ export default function NovoHistoricoPage() {
     setData(hoje.getFullYear() + "-" + String(hoje.getMonth() + 1).padStart(2, "0") + "-" + String(hoje.getDate()).padStart(2, "0"));
     let ativo = true;
     Promise.all([
-      fetch("/api/equipamentos", { cache: "no-store", credentials: "same-origin" }),
-      fetch("/api/historico-equipamentos", { cache: "no-store", credentials: "same-origin" }),
+      fetch(`/api/equipamentos?unidade=${encodeURIComponent(unidadeAtiva)}`, { cache: "no-store", credentials: "same-origin" }),
+      fetch(`/api/historico-equipamentos?unidade=${encodeURIComponent(unidadeAtiva)}`, { cache: "no-store", credentials: "same-origin" }),
     ])
       .then(async ([respostaEquipamentos, respostaHistorico]) => {
         const [dadosEquipamentos, dadosHistorico] = await Promise.all([
@@ -84,7 +87,7 @@ export default function NovoHistoricoPage() {
       .catch((e: unknown) => { if (ativo) setErro(e instanceof Error ? e.message : "Erro ao carregar equipamentos."); })
       .finally(() => { if (ativo) setCarregando(false); });
     return () => { ativo = false; };
-  }, []);
+  }, [unidadeAtiva, unidadeCarregada]);
 
   async function salvar(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
