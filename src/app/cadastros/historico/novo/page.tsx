@@ -57,6 +57,12 @@ export default function NovoHistoricoPage() {
   useEffect(() => {
     if (!unidadeCarregada) return;
 
+    // Evita exibir temporariamente equipamentos da unidade anterior ao alternar o colégio.
+    setCarregando(true);
+    setEquipamentos([]);
+    setEventosReparo([]);
+    setEquipamentoId("");
+
     const parametros = new URLSearchParams(window.location.search);
     const tipoUrl = parametros.get("tipo");
     if (TIPOS.some((item) => item.valor === tipoUrl)) setTipo(tipoUrl as TipoRegistro);
