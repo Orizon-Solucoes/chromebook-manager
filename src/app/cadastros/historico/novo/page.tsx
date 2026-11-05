@@ -36,6 +36,7 @@ function lerArquivo(arquivo: File): Promise<Anexo> {
 
 export default function NovoHistoricoPage() {
   const router = useRouter();
+  const { unidadeAtiva, unidadeCarregada } = useUnidade();
   const [equipamentos, setEquipamentos] = useState<Equipamento[]>([]);
   const [eventosReparo, setEventosReparo] = useState<EventoReparo[]>([]);
   const [equipamentoId, setEquipamentoId] = useState("");
