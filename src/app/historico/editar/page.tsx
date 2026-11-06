@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type Registro = { id:string; equipamentoId:string; equipamento:{patrimonio:string;tipo:string;fabricante:string;modelo:string}; tipo:string; categoria:string; data:string; descricao:string; observacao:string; quemRealizou:string; custo:number; destinoReparo:string; resultado:string; statusFinal:string };
-const TIPOS=[["ocorrencia","Ocorrência"],["manutencao","Manutenção interna"],["reposicao-de-peca","Reposição de peça"],["envio-para-reparo","Envio para reparo"],["retorno-de-reparo","Retorno de reparo"]];
+const TIPOS=[["manutencao","Manutenção interna"],["reposicao-de-peca","Reposição de peça"],["envio-para-reparo","Envio para reparo"],["retorno-de-reparo","Retorno de reparo"]];
 const CATEGORIAS=[["tela","Tela"],["teclado","Teclado"],["bateria","Bateria"],["carregador","Carregador"],["touchpad","Touchpad"],["sistema-operacional","Sistema operacional"],["wifi","Wi-Fi"],["bluetooth","Bluetooth"],["audio","Áudio"],["camera","Câmera"],["carcaca","Carcaça"],["dobradica","Dobradiça"],["usb","USB"],["outro","Outro"]];
 const campo="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none focus:border-gray-500 dark:border-[#55555c] dark:bg-[#333338] dark:text-white";
 const rotulo="mb-1.5 block text-sm font-semibold text-gray-700 dark:text-gray-200";
