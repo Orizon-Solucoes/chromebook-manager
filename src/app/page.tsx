@@ -60,7 +60,6 @@ const STATUS: Record<string, string> = {
 };
 
 const TIPOS_HISTORICO: Record<string, string> = {
-  ocorrencia: "Ocorrência",
   manutencao: "Manutenção",
   "reposicao-de-peca": "Reposição de peça",
   "envio-para-reparo": "Envio para reparo",
