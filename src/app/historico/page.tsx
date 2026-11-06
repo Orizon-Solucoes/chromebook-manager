@@ -29,7 +29,6 @@ type Registro = {
 };
 
 const TIPOS: Record<string, string> = {
-  ocorrencia: "Ocorrência",
   manutencao: "Manutenção interna",
   "reposicao-de-peca": "Reposição de peça",
   "envio-para-reparo": "Envio para reparo",
