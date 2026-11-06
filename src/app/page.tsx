@@ -436,7 +436,7 @@ export default function Home() {
                 return (
                   <Link
                     key={item.tipo}
-                    href="/equipamentos"
+                    href={{ chromebook: "/chromebooks", notebook: "/notebooks", projetor: "/projetores", catraca: "/catracas", impressora: "/impressoras" }[item.tipo]}
                     className="group min-w-0 rounded-lg border border-gray-200 bg-gray-50/70 p-3 transition duration-150 hover:-translate-y-0.5 hover:border-amber-500 hover:bg-gray-100 dark:border-gray-600 dark:bg-[#30302f] dark:hover:border-amber-400 dark:hover:bg-[#3c382d]"
                   >
                     <div className="flex items-start justify-between gap-3">
