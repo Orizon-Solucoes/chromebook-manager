@@ -7,11 +7,10 @@ import { useUnidade } from "@/components/UnidadeProvider";
 
 type Equipamento = { id: string; patrimonio: string; tipo: string; fabricante: string; modelo: string; localizacao: string; status: string };
 type EventoReparo = { equipamentoId: string; tipo: string; data: string; criadoEm?: string };
-type TipoRegistro = "ocorrencia" | "manutencao" | "reposicao-de-peca" | "envio-para-reparo" | "retorno-de-reparo";
+type TipoRegistro = "manutencao" | "reposicao-de-peca" | "envio-para-reparo" | "retorno-de-reparo";
 type Anexo = { nome: string; tipo: string; tamanho: number; dados: string };
 
 const TIPOS: { valor: TipoRegistro; nome: string }[] = [
-  { valor: "ocorrencia", nome: "Ocorrência" },
   { valor: "manutencao", nome: "Manutenção interna" },
   { valor: "reposicao-de-peca", nome: "Reposição de peça" },
   { valor: "envio-para-reparo", nome: "Envio para reparo externo" },
@@ -147,7 +146,7 @@ export default function NovoHistoricoPage() {
       <div className="mx-auto max-w-4xl">
         <Link href="/cadastros" className="mb-5 inline-block text-sm font-medium text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white">← Voltar para cadastros</Link>
         <h1 className="text-3xl font-bold text-gray-950 dark:text-white">Cadastrar registro</h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-300">Registre uma ocorrência, manutenção ou movimentação de reparo.</p>
+        <p className="mt-2 text-gray-600 dark:text-gray-300">Registre uma manutenção, troca de peça ou movimentação de reparo.</p>
         <form onSubmit={salvar} className="mt-7 space-y-6">
           <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-7 dark:border-[#505057] dark:bg-[#444449]">
             <h2 className="text-lg font-semibold text-gray-950 dark:text-white">Informações do registro</h2>
@@ -160,7 +159,7 @@ export default function NovoHistoricoPage() {
               {tipo === "envio-para-reparo" && <div className="sm:col-span-2"><label className={rotulo} htmlFor="destino">Assistência / empresa de reparo</label><input id="destino" required className={campo} value={destinoReparo} onChange={(e) => setDestinoReparo(e.target.value)} placeholder="Nome da empresa ou assistência" /></div>}
               {(tipo === "manutencao" || tipo === "reposicao-de-peca" || tipo === "retorno-de-reparo") && <div><label className={rotulo} htmlFor="custo">{tipo === "retorno-de-reparo" ? "Custo final da assistência (R$)" : "Custo interno (R$)"}</label><input id="custo" required={tipo === "retorno-de-reparo"} type="number" min="0" step="0.01" className={campo} value={custo} onChange={(e) => setCusto(e.target.value)} placeholder="0,00" /><p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{tipo === "retorno-de-reparo" ? "Informe o valor cobrado pela assistência. Se não houve cobrança, informe 0." : "Opcional. Registre aqui o gasto interno ou com a peça, apenas uma vez."}</p></div>}
               {tipo === "retorno-de-reparo" && <div><label className={rotulo} htmlFor="statusFinal">Status após retorno</label><select id="statusFinal" className={campo} value={statusFinal} onChange={(e) => setStatusFinal(e.target.value)}>{STATUS.map((item) => <option key={item.valor} value={item.valor}>{item.nome}</option>)}</select></div>}
-              <div className="sm:col-span-2"><label className={rotulo} htmlFor="descricao">Descrição</label><textarea id="descricao" required rows={4} className={campo} value={descricao} onChange={(e) => setDescricao(e.target.value)} placeholder={tipo === "manutencao" ? "Descreva o serviço feito pela equipe interna..." : "Descreva o que aconteceu ou o serviço realizado..."} /></div>
+              <div className="sm:col-span-2"><label className={rotulo} htmlFor="descricao">Descrição</label><textarea id="descricao" required rows={4} className={campo} value={descricao} onChange={(e) => setDescricao(e.target.value)} placeholder={tipo === "manutencao" ? "Descreva o serviço feito pela equipe interna..." : "Descreva o problema encontrado, o diagnóstico e o serviço realizado..."} /></div>
               {tipo === "retorno-de-reparo" && <div className="sm:col-span-2"><label className={rotulo} htmlFor="resultado">Resultado do reparo</label><textarea id="resultado" rows={3} className={campo} value={resultado} onChange={(e) => setResultado(e.target.value)} placeholder="Peças trocadas, testes realizados e resultado..." /></div>}
               <div className="sm:col-span-2"><label className={rotulo} htmlFor="observacao">Observações adicionais</label><textarea id="observacao" rows={3} className={campo} value={observacao} onChange={(e) => setObservacao(e.target.value)} placeholder="Informações complementares..." /></div>
               <div className="sm:col-span-2"><label className={rotulo} htmlFor="anexos">Anexos (máximo 5 arquivos de até 5 MB cada)</label><input id="anexos" type="file" multiple className={campo} onChange={(e) => setArquivos(Array.from(e.target.files ?? []))} />{arquivos.length > 0 && <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">{arquivos.length} arquivo(s) selecionado(s): {arquivos.map((arquivo) => arquivo.name).join(", ")}</p>}</div>
