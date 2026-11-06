@@ -13,7 +13,6 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const TIPOS = [
-  "ocorrencia",
   "manutencao",
   "reposicao-de-peca",
   "envio-para-reparo",
@@ -460,7 +459,8 @@ export async function GET(request: Request) {
           modelo: row.equipamento_modelo ?? "",
           localizacao: row.equipamento_localizacao ?? "",
         },
-        tipo: row.tipo,
+        // Registros antigos de ocorrência passam a ser tratados como manutenção.
+        tipo: row.tipo === "ocorrencia" ? "manutencao" : row.tipo,
         categoria: row.categoria ?? "",
         data: converterData(row.data_ocorrencia),
         descricao: row.descricao,
