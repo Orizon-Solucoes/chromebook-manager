@@ -341,8 +341,7 @@ export default function Sidebar({
             title="Sair da conta"
             className="flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-transparent px-2 text-xs font-semibold text-gray-600 transition hover:border-gray-300 hover:bg-gray-200 hover:text-gray-900 disabled:opacity-50 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:hover:text-white"
           >
-            <span aria-hidden="true">↪</span>
-            {saindo ? "Saindo..." : "Sair da conta"}
+            <span aria-hidden="true" className="text-lg">{saindo ? "…" : "↪"}</span>
           </button>
 
           <ThemeToggle />
