@@ -7,7 +7,6 @@ const opcoes = [
   { titulo: "Cadastrar manutenção", descricao: "Registre um serviço realizado pela equipe interna da escola.", href: "/cadastros/historico/novo?tipo=manutencao", simbolo: "⚙" },
   { titulo: "Cadastrar envio ao reparo", descricao: "Registre o envio para uma assistência técnica externa.", href: "/cadastros/historico/novo?tipo=envio-para-reparo", simbolo: "↗" },
   { titulo: "Cadastrar retorno do reparo", descricao: "Informe o resultado, o custo final e o status após o retorno.", href: "/cadastros/historico/novo?tipo=retorno-de-reparo", simbolo: "↩" },
-  { titulo: "Cadastrar ocorrência", descricao: "Registre falhas, problemas relatados e outras ocorrências.", href: "/cadastros/historico/novo?tipo=ocorrencia", simbolo: "!" },
 ];
 
 export default function CadastrosPage() {
@@ -27,7 +26,7 @@ export default function CadastrosPage() {
             </Link>
           ))}
           <Link href="/historico" className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:border-gray-400 hover:shadow-md dark:border-[#505057] dark:bg-[#444449]">
-            <div className="flex items-start gap-4"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-2xl dark:bg-[#333338]">◷</span><div><h2 className="text-lg font-semibold text-gray-950 dark:text-white">Consultar histórico</h2><p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">Consulte ocorrências, manutenções e reparos de todas as categorias.</p><span className="mt-4 inline-block text-sm font-semibold text-gray-800 dark:text-gray-100">Ver histórico →</span></div></div>
+            <div className="flex items-start gap-4"><span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-2xl dark:bg-[#333338]">◷</span><div><h2 className="text-lg font-semibold text-gray-950 dark:text-white">Consultar histórico</h2><p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-300">Consulte manutenções, trocas de peças e reparos de todas as categorias.</p><span className="mt-4 inline-block text-sm font-semibold text-gray-800 dark:text-gray-100">Ver histórico →</span></div></div>
           </Link>
         </div>
       </div>
