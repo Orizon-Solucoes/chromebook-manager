@@ -97,9 +97,13 @@ export default function EditarEquipamentoPage() {
   }, [params.id, unidadeAtiva]);
 
   function voltar() {
-    if (window.history.length > 1) router.back();
-    else if (returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//")) router.push(returnTo);
-    else router.push("/equipamentos");
+    if (returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//")) {
+      router.push(returnTo);
+    } else if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/equipamentos");
+    }
   }
 
   function alterarTipo(novo: Tipo) {
