@@ -168,7 +168,10 @@ function apresentarEquipamento(row: EquipamentoRow) {
   if (row.tipo === "access-point") {
     detalhes = {
       ...detalhes,
+      bloco: detalhes.bloco ?? "",
+      rack: detalhes.rack ?? row.localizacao ?? "",
       macAddress: row.mac_address ?? detalhes.macAddress ?? "",
+      potenciaDbm: detalhes.potenciaDbm ?? 0,
     };
   }
 
