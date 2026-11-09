@@ -17,6 +17,7 @@ const TIPOS = [
   "projetor",
   "catraca",
   "impressora",
+  "access-point",
 ] as const;
 
 const STATUS = [
@@ -113,6 +114,7 @@ const PREFIXOS_PATRIMONIO: Record<TipoEquipamento, string> = {
   projetor: "PROJ",
   catraca: "CATRACA",
   impressora: "IMP",
+  "access-point": "AP",
 };
 
 async function obterProximoPatrimonio(tipo: TipoEquipamento): Promise<string> {
