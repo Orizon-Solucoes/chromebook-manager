@@ -42,6 +42,7 @@ type EquipamentoRow = RowDataPacket & {
   modelo: string | null;
   numero_serie: string | null;
   localizacao: string | null;
+  mac_address: string | null;
   status: StatusEquipamento;
   observacoes: string | null;
   detalhes: Record<string, unknown> | string | null;
@@ -164,6 +165,13 @@ function apresentarEquipamento(row: EquipamentoRow) {
     }
   }
 
+  if (row.tipo === "access-point") {
+    detalhes = {
+      ...detalhes,
+      macAddress: row.mac_address ?? detalhes.macAddress ?? "",
+    };
+  }
+
   return {
     id: row.id,
     patrimonio: row.patrimonio ?? "",
@@ -247,6 +255,7 @@ export async function GET(request: Request) {
           modelo,
           numero_serie,
           localizacao,
+          mac_address,
           status,
           observacoes,
           detalhes,
