@@ -38,6 +38,7 @@ const TIPOS: Record<string, string> = {
   projetor: "Projetores",
   catraca: "Catracas",
   impressora: "Impressoras",
+  "access-point": "Access Points (APs)",
 };
 
 const ROTAS_CATEGORIAS: Record<string, string> = {
@@ -46,6 +47,7 @@ const ROTAS_CATEGORIAS: Record<string, string> = {
   projetor: "/projetores",
   catraca: "/catracas",
   impressora: "/impressoras",
+  "access-point": "/aps",
 };
 
 const STATUS: Record<string, string> = {
@@ -105,9 +107,13 @@ export default function Home() {
       try {
         const unidade = encodeURIComponent(unidadeAtiva);
 
-        const [respostaEquipamentos, respostaHistorico] =
+        const [respostaEquipamentos, respostaAps, respostaHistorico] =
           await Promise.all([
             fetch(`/api/equipamentos?unidade=${unidade}`, {
+              cache: "no-store",
+              credentials: "same-origin",
+            }),
+            fetch(`/api/aps?unidade=${unidade}`, {
               cache: "no-store",
               credentials: "same-origin",
             }),
@@ -117,8 +123,9 @@ export default function Home() {
             }),
           ]);
 
-        const [dadosEquipamentos, dadosHistorico] = await Promise.all([
+        const [dadosEquipamentos, dadosAps, dadosHistorico] = await Promise.all([
           respostaEquipamentos.json().catch(() => []),
+          respostaAps.json().catch(() => []),
           respostaHistorico.json().catch(() => []),
         ]);
 
@@ -126,6 +133,12 @@ export default function Home() {
           throw new Error(
             dadosEquipamentos.erro ||
               "Falha ao consultar equipamentos.",
+          );
+        }
+
+        if (!respostaAps.ok) {
+          throw new Error(
+            dadosAps.erro || "Falha ao consultar access points.",
           );
         }
 
@@ -138,11 +151,35 @@ export default function Home() {
 
         if (!ativo) return;
 
-        setEquipamentos(
-          Array.isArray(dadosEquipamentos)
-            ? dadosEquipamentos
-            : [],
-        );
+        const equipamentosBase = Array.isArray(dadosEquipamentos)
+          ? dadosEquipamentos
+          : [];
+        const accessPoints = Array.isArray(dadosAps)
+          ? dadosAps.map((ap: {
+              id: string;
+              macAddress?: string;
+              marca?: string;
+              modelo?: string;
+              bloco?: string;
+              rack?: string;
+              status?: string;
+            }) => ({
+              id: ap.id,
+              patrimonio: ap.macAddress || ap.id,
+              tipo: "access-point",
+              fabricante: ap.marca || "",
+              modelo: ap.modelo || "",
+              localizacao: [ap.bloco, ap.rack].filter(Boolean).join(" · "),
+              status:
+                ap.status === "OK"
+                  ? "disponivel"
+                  : ap.status === "Atenção" || ap.status === "Em manutenção"
+                    ? "em-reparo"
+                    : "inativo",
+            }))
+          : [];
+
+        setEquipamentos([...equipamentosBase, ...accessPoints]);
 
         setHistorico(
           Array.isArray(dadosHistorico)
@@ -424,7 +461,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 lg:grid-cols-5">
+            <div className="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 lg:grid-cols-6">
               {porTipo.map((item) => {
                 const proporcao = equipamentos.length
                   ? Math.round(
@@ -438,6 +475,7 @@ export default function Home() {
                   projetor: "◉",
                   catraca: "↔",
                   impressora: "▤",
+                  "access-point": "⌁",
                 };
 
                 return (
