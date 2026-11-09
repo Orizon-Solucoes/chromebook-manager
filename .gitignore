@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local database exports, logs and backups
+*.sql.gz
+*.dump
+*.bak
+*.backup
+*.log

@@ -1,25 +1,26 @@
-# Migração do banco — inventário universal
+# Banco de dados
 
-Execute os arquivos abaixo no editor SQL do TiDB Cloud, **nesta ordem**:
+A aplicação atual utiliza as tabelas universais `equipamentos`, `historico_equipamentos` e `historico_equipamento_anexos`, além das tabelas de autenticação, usuários e unidades.
 
-1. `001_criar_equipamentos_universais.sql`
-2. `002_criar_historico_unificado.sql`
+## Migrações estruturais
 
-Eles criam as tabelas `equipamentos`, `historico_equipamentos` e `historico_equipamento_anexos`.
+Os arquivos SQL numerados na raiz desta pasta documentam a evolução do esquema. **Não execute todos em sequência em uma base que já está em produção.** Antes de qualquer alteração, faça backup, confira a estrutura atual e aplique somente a migração que ainda não foi executada.
 
-## Atenção
+- `001_criar_equipamentos_universais.sql`: estrutura inicial do inventário universal.
+- `002_criar_historico_unificado.sql`: histórico e anexos vinculados aos equipamentos.
+- `007_gestao_usuarios.sql` e `008_acesso_multiplas_unidades.sql`: alterações históricas da autenticação e do acesso por unidade.
+- `migrations/2026-11-09-unificar-access-points.sql`: migração histórica dos APs para `equipamentos`.
 
-- Os scripts não apagam as tabelas antigas `chromebooks`, `manutencoes` e `manutencao_anexos`.
-- Eles não migram automaticamente os registros antigos. O inventário universal começa vazio para que os equipamentos sejam cadastrados novamente, conforme combinado.
-- Não execute comandos `DROP TABLE` para limpar as tabelas antigas; as rotas antigas ainda podem depender delas.
-- Execute o segundo script somente depois de o primeiro terminar sem erros, porque o histórico possui uma chave estrangeira para `equipamentos`.
+## Atenção: Access Points
 
-## Verificação após executar
+A migração de 09/11/2026 já foi aplicada no banco utilizado pela aplicação. Os APs agora são registros de `equipamentos` com `tipo = 'access-point'`, e os campos específicos ficam em `detalhes`.
 
-Rode:
+**Não execute novamente** `migrations/2026-11-09-unificar-access-points.sql`: ela adiciona uma coluna e um índice únicos e copia registros; não é idempotente. A tabela antiga `access_points` foi mantida no banco durante a validação. Não a remova sem antes confirmar que nenhuma implantação ou rotina ainda a utiliza e que existe backup.
 
-```sql
-SHOW TABLES;
-```
+O antigo script `006_access_points.sql` e os arquivos de importação com inventário real foram retirados do repositório porque continham identificadores e detalhes operacionais da infraestrutura. Os dados devem ser mantidos no banco privado, não no Git.
 
-Confirme que as três tabelas novas aparecem. Depois, na aplicação, entre com uma conta autenticada e teste primeiro o cadastro de um equipamento de teste. Em seguida, teste uma ocorrência, uma manutenção interna, um envio para reparo e um retorno de reparo antes de começar a cadastrar o inventário real.
+## Configuração
+
+Defina `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` e `DB_NAME` nas variáveis de ambiente. Nunca inclua credenciais, dumps ou inventários reais neste repositório.
+
+Para dúvidas sobre a estrutura atual, consulte o esquema diretamente no ambiente autorizado antes de executar qualquer SQL.

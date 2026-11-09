@@ -110,7 +110,7 @@ DB_NAME=chromebook_manager
 
 **Importante:**
 - Substitua os valores de exemplo pelos dados corretos do banco.
-- Não compartilhe nem envie o arquivo `.env.local) para o GitHub. Ele contém credenciais.
+- Não compartilhe nem envie o arquivo `.env.local para o GitHub. Ele contém credenciais.
 - Não coloque senhas diretamente no código-fonte.
 - O banco precisa estar acessível a partir da sua conexão e o usuário precisa ter as permissões necessárias.
 - Para executar localmente, solicite as credenciais ao responsável pelo projeto; elas não são incluídas neste README.
@@ -140,6 +140,13 @@ pnpm lint
 - `pnpm build`: gera a versão de produção e ajuda a identificar erros de compilação.
 - `pnpm start`: inicia a versão de produção já compilada.
 - `pnpm lint`: executa o ESLint.
+
+## 🔒 Segurança e privacidade
+
+- Credenciais, arquivos `.env*`, backups do banco, dumps SQL com dados reais, endereços IP, MACs, números de série e detalhes da infraestrutura não devem ser versionados.
+- Configure as credenciais somente nas variáveis de ambiente da hospedagem ou em `.env.local` (que permanece fora do Git).
+- O repositório contém apenas código e scripts estruturais sem dados operacionais reais. Dados de inventário devem permanecer no banco de dados privado.
+- Se uma credencial real já tiver sido enviada ao GitHub, removê-la do arquivo atual não apaga o histórico: revogue/rotacione a credencial e avalie a limpeza do histórico do Git.
 
 ## 🗄️ Dados e unidades escolares
 
