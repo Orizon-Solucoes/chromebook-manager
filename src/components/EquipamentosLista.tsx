@@ -10,7 +10,8 @@ export type TipoEquipamento =
   | "notebook"
   | "projetor"
   | "catraca"
-  | "impressora";
+  | "impressora"
+  | "access-point";
 
 type Equipamento = {
   id: string;
@@ -31,6 +32,7 @@ const NOMES: Record<TipoEquipamento, string> = {
   projetor: "Projetor",
   catraca: "Catraca",
   impressora: "Impressora",
+  "access-point": "Access Point",
 };
 
 const PLURAIS: Record<TipoEquipamento, string> = {
@@ -39,6 +41,7 @@ const PLURAIS: Record<TipoEquipamento, string> = {
   projetor: "Projetores",
   catraca: "Catracas",
   impressora: "Impressoras",
+  "access-point": "Access Points",
 };
 
 function numeroEquipamento(item: Equipamento): string {
@@ -198,6 +201,9 @@ export default function EquipamentosLista({
         String(item.detalhes?.paginasImpressas ?? ""),
         String(item.detalhes?.codigoModelo ?? ""),
         String(item.detalhes?.saudeBateria ?? ""),
+        String(item.detalhes?.bloco ?? ""),
+        String(item.detalhes?.rack ?? ""),
+        String(item.detalhes?.macAddress ?? ""),
       ]
         .join(" ")
         .toLocaleLowerCase("pt-BR");
@@ -215,6 +221,7 @@ export default function EquipamentosLista({
       "projetor",
       "catraca",
       "impressora",
+      "access-point",
     ];
 
     const numeroChromebook = (item: Equipamento) => {
@@ -415,7 +422,9 @@ export default function EquipamentosLista({
                         {NOMES[item.tipo]}
                       </p>
                       <h2 className="mt-1 break-words font-bold text-gray-900 dark:text-white">
-                        {item.tipo === "chromebook"
+                        {item.tipo === "access-point"
+                          ? `Access Point${item.detalhes?.bloco ? ` — ${String(item.detalhes.bloco)}` : ""}`
+                          : item.tipo === "chromebook"
                           ? `Chromebook nº ${String(
                               item.detalhes?.numeroChromebook ??
                                 item.patrimonio.replace("CHROME-", ""),
@@ -601,7 +610,9 @@ export default function EquipamentosLista({
                         <>
                           <td className={td}>
                             <p className="font-semibold text-gray-900 dark:text-gray-100">
-                              {item.tipo === "chromebook"
+                              {item.tipo === "access-point"
+                                ? `Access Point${item.detalhes?.bloco ? ` — ${String(item.detalhes.bloco)}` : ""}`
+                                : item.tipo === "chromebook"
                                 ? `Chromebook Nº ${String(
                                     item.detalhes?.numeroChromebook ??
                                       item.patrimonio.replace("CHROME-", ""),
