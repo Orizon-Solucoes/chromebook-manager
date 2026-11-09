@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useUnidade } from "@/components/UnidadeProvider";
 
 const TIPOS = [
   { valor: "chromebook", nome: "Chromebook" },
@@ -9,6 +10,7 @@ const TIPOS = [
   { valor: "projetor", nome: "Projetor" },
   { valor: "catraca", nome: "Catraca" },
   { valor: "impressora", nome: "Impressora" },
+  { valor: "access-point", nome: "Access Point" },
 ] as const;
 type Tipo = (typeof TIPOS)[number]["valor"];
 type Equipamento = {
@@ -40,6 +42,7 @@ export default function EditarEquipamentoPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("returnTo");
+  const { unidadeAtiva } = useUnidade();
   const [historico, setHistorico] = useState<Registro[]>([]);
   const [equipamento, setEquipamento] = useState<Equipamento | null>(null);
   const [patrimonio, setPatrimonio] = useState("");
@@ -60,7 +63,7 @@ export default function EditarEquipamentoPage() {
     async function carregar() {
       try {
         const [resposta, respostaHistorico] = await Promise.all([
-          fetch("/api/equipamentos", { cache: "no-store", credentials: "same-origin" }),
+          fetch(`/api/equipamentos?unidade=${encodeURIComponent(unidadeAtiva)}`, { cache: "no-store", credentials: "same-origin" }),
           fetch("/api/historico-equipamentos?equipamentoId=" + encodeURIComponent(params.id), { cache: "no-store", credentials: "same-origin" }),
         ]);
         const [dados, dadosHistorico] = await Promise.all([
@@ -91,7 +94,7 @@ export default function EditarEquipamentoPage() {
     }
     void carregar();
     return () => { ativo = false; };
-  }, [params.id]);
+  }, [params.id, unidadeAtiva]);
 
   function voltar() {
     if (window.history.length > 1) router.back();
@@ -112,11 +115,28 @@ export default function EditarEquipamentoPage() {
     if (salvando) return;
     setSalvando(true); setErro("");
     try {
-      const resposta = await fetch(`/api/equipamentos/${encodeURIComponent(params.id)}`, {
+      const ehAP = tipo === "access-point";
+      const endpoint = ehAP
+        ? `/api/aps?unidade=${encodeURIComponent(unidadeAtiva)}`
+        : `/api/equipamentos/${encodeURIComponent(params.id)}`;
+      const corpo = ehAP
+        ? {
+            id: params.id,
+            bloco: detalhes.bloco ?? "",
+            rack: localizacao,
+            marca: fabricante,
+            modelo,
+            macAddress: detalhes.macAddress ?? "",
+            potenciaDbm: Number(detalhes.potenciaDbm),
+            status,
+            observacoes,
+          }
+        : { patrimonio, tipo, fabricante, modelo, numeroSerie, localizacao, status, observacoes, detalhes };
+      const resposta = await fetch(endpoint, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
-        body: JSON.stringify({ patrimonio, tipo, fabricante, modelo, numeroSerie, localizacao, status, observacoes, detalhes }),
+        body: JSON.stringify(corpo),
       });
       const dados = await resposta.json().catch(() => ({}));
       if (!resposta.ok) throw new Error(dados.erro || "Não foi possível salvar as alterações.");
@@ -141,13 +161,13 @@ export default function EditarEquipamentoPage() {
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7 dark:border-[#505057] dark:bg-[#444449]">
         <h2 className="text-lg font-semibold text-gray-950 dark:text-white">Identificação e localização</h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
-          <div><label className={rotulo} htmlFor="patrimonio">Patrimônio / identificação</label><input id="patrimonio" className={campo} value={patrimonio} onChange={(e) => setPatrimonio(e.target.value)} /><p className="mt-1.5 text-xs leading-5 text-gray-500 dark:text-gray-400">A identificação precisa ser única nesta unidade. Você pode alterá-la, desde que o novo valor não esteja em uso.</p></div>
-          <div><label className={rotulo} htmlFor="tipo">Tipo</label><select id="tipo" className={campo} value={tipo} onChange={(e) => alterarTipo(e.target.value as Tipo)}>{TIPOS.map((item) => <option key={item.valor} value={item.valor}>{item.nome}</option>)}</select></div>
+          {tipo !== "access-point" && <div><label className={rotulo} htmlFor="patrimonio">Patrimônio / identificação</label><input id="patrimonio" className={campo} value={patrimonio} onChange={(e) => setPatrimonio(e.target.value)} /><p className="mt-1.5 text-xs leading-5 text-gray-500 dark:text-gray-400">A identificação precisa ser única nesta unidade. Você pode alterá-la, desde que o novo valor não esteja em uso.</p></div>}
+          {tipo !== "access-point" && <div><label className={rotulo} htmlFor="tipo">Tipo</label><select id="tipo" className={campo} value={tipo} onChange={(e) => alterarTipo(e.target.value as Tipo)}>{TIPOS.filter((item) => item.valor !== "access-point").map((item) => <option key={item.valor} value={item.valor}>{item.nome}</option>)}</select></div>}
           <div><label className={rotulo} htmlFor="fabricante">Fabricante</label><input id="fabricante" className={campo} value={fabricante} onChange={(e) => setFabricante(e.target.value)} /></div>
           <div><label className={rotulo} htmlFor="modelo">Modelo</label><input id="modelo" className={campo} value={modelo} onChange={(e) => setModelo(e.target.value)} /></div>
-          <div><label className={rotulo} htmlFor="numeroSerie">Número de série</label><input id="numeroSerie" className={campo} value={numeroSerie} onChange={(e) => setNumeroSerie(e.target.value)} /></div>
-          <div><label className={rotulo} htmlFor="localizacao">Sala / setor / localização</label><input id="localizacao" className={campo} value={localizacao} onChange={(e) => setLocalizacao(e.target.value)} /></div>
-          <div><label className={rotulo} htmlFor="status">Status</label><select id="status" className={campo} value={status} onChange={(e) => setStatus(e.target.value)}><option value="disponivel">Disponível</option><option value="em-uso">Em uso</option><option value="reserva">Reserva</option><option value="em-reparo">Em reparo</option><option value="inativo">Inativo</option><option value="para-descarte">Para descarte</option></select></div>
+          {tipo !== "access-point" && <div><label className={rotulo} htmlFor="numeroSerie">Número de série</label><input id="numeroSerie" className={campo} value={numeroSerie} onChange={(e) => setNumeroSerie(e.target.value)} /></div>}
+          <div><label className={rotulo} htmlFor="localizacao">{tipo === "access-point" ? "Rack / localização" : "Sala / setor / localização"}</label><input id="localizacao" className={campo} value={localizacao} onChange={(e) => setLocalizacao(e.target.value)} /></div>
+          <div><label className={rotulo} htmlFor="status">Status</label><select id="status" className={campo} value={status} onChange={(e) => setStatus(e.target.value)}>{tipo === "access-point" ? <><option value="OK">OK</option><option value="Atenção">Atenção</option><option value="Em manutenção">Em manutenção</option><option value="Inativo">Inativo</option></> : <><option value="disponivel">Disponível</option><option value="em-uso">Em uso</option><option value="reserva">Reserva</option><option value="em-reparo">Em reparo</option><option value="inativo">Inativo</option><option value="para-descarte">Para descarte</option></>}</select></div>
         </div>
       </section>
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7 dark:border-[#505057] dark:bg-[#444449]">
@@ -158,6 +178,7 @@ export default function EditarEquipamentoPage() {
           {tipo === "projetor" && <>{campoDetalhe("tecnologia", "Tecnologia", "Ex.: DLP, LCD, LED")}{campoDetalhe("conexoes", "Conexões", "Ex.: HDMI, VGA, USB")}</>}
           {tipo === "catraca" && <>{campoDetalhe("tipoControle", "Tipo de controle", "Ex.: biometria, cartão, facial")}{campoDetalhe("fabricanteControladora", "Fabricante/controladora", "Fabricante do sistema de controle")}</>}
           {tipo === "impressora" && <>{campoDetalhe("tecnologiaImpressao", "Tecnologia de impressão", "Ex.: laser, jato de tinta")}{campoDetalhe("conexao", "Conexão / rede", "Ex.: 192.168.1.50 (CORPORATIVO), USB")}{campoDetalhe("enderecoIp", "Endereço IP", "Ex.: 192.168.1.50")}{campoDetalhe("mac", "Endereço MAC", "AA:BB:CC:DD:EE:FF")}{campoDetalhe("paginasImpressas", "Páginas impressas", "Ex.: 60399")}{campoDetalhe("dataInstalacao", "Data de instalação", "AAAA-MM-DD")}</>}
+          {tipo === "access-point" && <>{campoDetalhe("bloco", "Bloco / setor", "Ex.: Bloco A")}{campoDetalhe("macAddress", "MAC Address", "AA:BB:CC:DD:EE:FF")}{campoDetalhe("potenciaDbm", "Potência (dBm)", "Ex.: 22")}</>}
         </div>
       </section>
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-7 dark:border-[#505057] dark:bg-[#444449]"><label className={rotulo} htmlFor="observacoes">Observações</label><textarea id="observacoes" rows={4} className={campo} value={observacoes} onChange={(e) => setObservacoes(e.target.value)} /></section>
