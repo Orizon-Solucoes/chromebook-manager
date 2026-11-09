@@ -107,85 +107,33 @@ export default function Home() {
       try {
         const unidade = encodeURIComponent(unidadeAtiva);
 
-        const [respostaEquipamentos, respostaAps, respostaHistorico] =
-          await Promise.all([
-            fetch(`/api/equipamentos?unidade=${unidade}`, {
-              cache: "no-store",
-              credentials: "same-origin",
-            }),
-            fetch(`/api/aps?unidade=${unidade}`, {
-              cache: "no-store",
-              credentials: "same-origin",
-            }),
-            fetch(`/api/historico-equipamentos?unidade=${unidade}`, {
-              cache: "no-store",
-              credentials: "same-origin",
-            }),
-          ]);
+        const [respostaEquipamentos, respostaHistorico] = await Promise.all([
+          fetch(`/api/equipamentos?unidade=${unidade}`, {
+            cache: "no-store",
+            credentials: "same-origin",
+          }),
+          fetch(`/api/historico-equipamentos?unidade=${unidade}`, {
+            cache: "no-store",
+            credentials: "same-origin",
+          }),
+        ]);
 
-        const [dadosEquipamentos, dadosAps, dadosHistorico] = await Promise.all([
+        const [dadosEquipamentos, dadosHistorico] = await Promise.all([
           respostaEquipamentos.json().catch(() => []),
-          respostaAps.json().catch(() => []),
           respostaHistorico.json().catch(() => []),
         ]);
 
         if (!respostaEquipamentos.ok) {
-          throw new Error(
-            dadosEquipamentos.erro ||
-              "Falha ao consultar equipamentos.",
-          );
+          throw new Error(dadosEquipamentos.erro || "Falha ao consultar equipamentos.");
         }
-
-        if (!respostaAps.ok) {
-          throw new Error(
-            dadosAps.erro || "Falha ao consultar access points.",
-          );
-        }
-
         if (!respostaHistorico.ok) {
-          throw new Error(
-            dadosHistorico.erro ||
-              "Falha ao consultar histórico.",
-          );
+          throw new Error(dadosHistorico.erro || "Falha ao consultar histórico.");
         }
-
         if (!ativo) return;
 
-        const equipamentosBase = Array.isArray(dadosEquipamentos)
-          ? dadosEquipamentos
-          : [];
-        const accessPoints = Array.isArray(dadosAps)
-          ? dadosAps.map((ap: {
-              id: string;
-              macAddress?: string;
-              marca?: string;
-              modelo?: string;
-              bloco?: string;
-              rack?: string;
-              status?: string;
-            }) => ({
-              id: ap.id,
-              patrimonio: ap.macAddress || ap.id,
-              tipo: "access-point",
-              fabricante: ap.marca || "",
-              modelo: ap.modelo || "",
-              localizacao: [ap.bloco, ap.rack].filter(Boolean).join(" · "),
-              status:
-                ap.status === "OK"
-                  ? "disponivel"
-                  : ap.status === "Atenção" || ap.status === "Em manutenção"
-                    ? "em-reparo"
-                    : "inativo",
-            }))
-          : [];
+        setEquipamentos(Array.isArray(dadosEquipamentos) ? dadosEquipamentos : []);
+        setHistorico(Array.isArray(dadosHistorico) ? dadosHistorico : []);
 
-        setEquipamentos([...equipamentosBase, ...accessPoints]);
-
-        setHistorico(
-          Array.isArray(dadosHistorico)
-            ? dadosHistorico
-            : [],
-        );
       } catch (e: unknown) {
         if (ativo) {
           setErro(
