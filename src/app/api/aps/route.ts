@@ -11,7 +11,7 @@ type Unidade = "CE" | "JP";
 type APDetalhes = { bloco: string; rack: string; macAddress: string; potenciaDbm: number };
 type APRow = RowDataPacket & {
   id: string; unidade_id: Unidade; fabricante: string | null; modelo: string | null;
-  localizacao: string | null; status: string; observacoes: string | null;
+  localizacao: string | null; mac_address: string | null; status: string; observacoes: string | null;
   detalhes: APDetalhes | string | null; created_at: string | Date; updated_at: string | Date;
 };
 const erro = (mensagem: string, status: number) =>
@@ -61,7 +61,7 @@ function apresentar(r: APRow) {
   const d = lerDetalhes(r.detalhes);
   return {
     id: r.id, unidadeId: r.unidade_id, bloco: d.bloco || "", rack: d.rack || r.localizacao || "",
-    marca: r.fabricante || "", modelo: r.modelo || "", macAddress: d.macAddress || "",
+    marca: r.fabricante || "", modelo: r.modelo || "", macAddress: r.mac_address || d.macAddress || "",
     potenciaDbm: Number(d.potenciaDbm ?? 0), status: r.status,
     observacoes: r.observacoes ?? "", criadoEm: r.created_at, atualizadoEm: r.updated_at,
   };
@@ -71,7 +71,7 @@ export async function GET(request: Request) {
   try {
     const c = await contexto(request); if ("erro" in c) return c.erro;
     const [rows] = await pool.execute<APRow[]>(
-      "SELECT id, unidade_id, fabricante, modelo, localizacao, status, observacoes, detalhes, created_at, updated_at FROM equipamentos WHERE unidade_id = ? AND tipo = 'access-point' ORDER BY JSON_UNQUOTE(JSON_EXTRACT(detalhes, '$.bloco')), localizacao, fabricante, modelo",
+      "SELECT id, unidade_id, fabricante, modelo, localizacao, mac_address, status, observacoes, detalhes, created_at, updated_at FROM equipamentos WHERE unidade_id = ? AND tipo = 'access-point' ORDER BY JSON_UNQUOTE(JSON_EXTRACT(detalhes, '$.bloco')), localizacao, fabricante, modelo",
       [c.unidade],
     );
     return NextResponse.json(rows.map(apresentar), { headers: { "Cache-Control": "no-store" } });
@@ -89,18 +89,19 @@ export async function POST(request: Request) {
     const v = validar(b as Record<string, unknown>); if (!v.ok) return erro(v.erro, 400);
     const a = v.valores;
     const [duplicados] = await pool.execute<RowDataPacket[]>(
-      "SELECT id FROM equipamentos WHERE unidade_id = ? AND tipo = 'access-point' AND JSON_UNQUOTE(JSON_EXTRACT(detalhes, '$.macAddress')) = ? LIMIT 1",
+      "SELECT id FROM equipamentos WHERE unidade_id = ? AND tipo = 'access-point' AND mac_address = ? LIMIT 1",
       [c.unidade, a.macAddress],
     );
     if (duplicados.length) return erro("Já existe um AP com esse MAC nesta unidade.", 409);
     const id = "AP-" + randomUUID();
-    const detalhes: APDetalhes = { bloco: a.bloco, rack: a.rack, macAddress: a.macAddress, potenciaDbm: a.potenciaDbm };
+    const detalhes = { bloco: a.bloco, rack: a.rack, potenciaDbm: a.potenciaDbm };
     await pool.execute<ResultSetHeader>(
-      "INSERT INTO equipamentos (id, patrimonio, tipo, fabricante, modelo, numero_serie, localizacao, status, observacoes, detalhes, unidade_id) VALUES (?, NULL, 'access-point', ?, ?, NULL, ?, ?, ?, ?, ?)",
-      [id, a.marca, a.modelo, a.rack, a.status, a.observacoes, JSON.stringify(detalhes), c.unidade],
+      "INSERT INTO equipamentos (id, patrimonio, tipo, fabricante, modelo, numero_serie, localizacao, mac_address, status, observacoes, detalhes, unidade_id) VALUES (?, NULL, 'access-point', ?, ?, NULL, ?, ?, ?, ?, ?, ?)",
+      [id, a.marca, a.modelo, a.rack, a.macAddress, a.status, a.observacoes, JSON.stringify(detalhes), c.unidade],
     );
     return NextResponse.json({ id, unidadeId: c.unidade, ...a }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (e) {
+    if ((e as { code?: string }).code === "ER_DUP_ENTRY") return erro("Já existe um AP com esse MAC nesta unidade.", 409);
     console.error("Erro ao cadastrar AP:", e);
     return erro("Não foi possível cadastrar o AP.", 500);
   }
@@ -116,14 +117,14 @@ export async function PATCH(request: Request) {
     const v = validar(entrada); if (!v.ok) return erro(v.erro, 400);
     const a = v.valores;
     const [duplicados] = await pool.execute<RowDataPacket[]>(
-      "SELECT id FROM equipamentos WHERE unidade_id = ? AND tipo = 'access-point' AND JSON_UNQUOTE(JSON_EXTRACT(detalhes, '$.macAddress')) = ? AND id <> ? LIMIT 1",
+      "SELECT id FROM equipamentos WHERE unidade_id = ? AND tipo = 'access-point' AND mac_address = ? AND id <> ? LIMIT 1",
       [c.unidade, a.macAddress, id],
     );
     if (duplicados.length) return erro("Já existe um AP com esse MAC nesta unidade.", 409);
     const detalhes: APDetalhes = { bloco: a.bloco, rack: a.rack, macAddress: a.macAddress, potenciaDbm: a.potenciaDbm };
     const [r] = await pool.execute<ResultSetHeader>(
-      "UPDATE equipamentos SET fabricante = ?, modelo = ?, localizacao = ?, status = ?, observacoes = ?, detalhes = ? WHERE id = ? AND unidade_id = ? AND tipo = 'access-point'",
-      [a.marca, a.modelo, a.rack, a.status, a.observacoes, JSON.stringify(detalhes), id, c.unidade],
+      "UPDATE equipamentos SET fabricante = ?, modelo = ?, localizacao = ?, mac_address = ?, status = ?, observacoes = ?, detalhes = ? WHERE id = ? AND unidade_id = ? AND tipo = 'access-point'",
+      [a.marca, a.modelo, a.rack, a.macAddress, a.status, a.observacoes, JSON.stringify(detalhes), id, c.unidade],
     );
     if (!r.affectedRows) {
       const [existe] = await pool.execute<RowDataPacket[]>(
@@ -133,6 +134,7 @@ export async function PATCH(request: Request) {
     }
     return NextResponse.json({ id, unidadeId: c.unidade, ...a }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
+    if ((e as { code?: string }).code === "ER_DUP_ENTRY") return erro("Já existe um AP com esse MAC nesta unidade.", 409);
     console.error("Erro ao editar AP:", e);
     return erro("Não foi possível atualizar o AP.", 500);
   }
