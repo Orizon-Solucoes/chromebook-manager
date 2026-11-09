@@ -1,21 +1,31 @@
 -- Migração de access_points para equipamentos
 -- Faça backup do banco antes de executar.
--- Execute primeiro as consultas de pré-validação.
+-- Execute este arquivo uma única vez, na ordem apresentada.
 
--- 1) Esta consulta precisa retornar ZERO linhas: IDs de AP já usados.
+-- 1) Pré-validação: precisa retornar ZERO linhas (IDs não podem colidir).
 SELECT ap.id
 FROM access_points ap
 INNER JOIN equipamentos e ON e.id = ap.id;
 
--- 2) Migre os APs preservando IDs e datas.
--- Campos específicos ficam no JSON detalhes.
+-- 2) Cria uma coluna exclusiva opcional para MAC.
+-- NULL é permitido para os demais tipos de equipamento.
+ALTER TABLE equipamentos
+  ADD COLUMN mac_address CHAR(17) NULL AFTER patrimonio;
+
+-- 3) Impede MAC repetido dentro da mesma unidade.
+-- MySQL/TiDB permite vários NULLs em índice UNIQUE.
+CREATE UNIQUE INDEX uq_equipamentos_unidade_mac
+  ON equipamentos (unidade_id, mac_address);
+
+-- 4) Migra os APs preservando IDs, status, observações e datas.
 INSERT INTO equipamentos (
-  id, patrimonio, tipo, fabricante, modelo, numero_serie, localizacao,
-  status, observacoes, detalhes, created_at, updated_at, unidade_id
+  id, patrimonio, mac_address, tipo, fabricante, modelo, numero_serie,
+  localizacao, status, observacoes, detalhes, created_at, updated_at, unidade_id
 )
 SELECT
   ap.id,
   NULL,
+  UPPER(REPLACE(ap.mac_address, '-', ':')),
   'access-point',
   ap.marca,
   ap.modelo,
@@ -26,27 +36,23 @@ SELECT
   JSON_OBJECT(
     'bloco', ap.bloco,
     'rack', ap.rack,
-    'macAddress', UPPER(REPLACE(ap.mac_address, '-', ':')),
     'potenciaDbm', CAST(ap.potencia_dbm AS DECIMAL(5,2))
   ),
   ap.created_at,
   ap.updated_at,
   ap.unidade_id
-FROM access_points ap
-WHERE NOT EXISTS (
-  SELECT 1 FROM equipamentos e WHERE e.id = ap.id
-);
+FROM access_points ap;
 
--- 3) Os totais precisam ser iguais.
+-- 5) Validação: estes dois totais precisam ser iguais.
 SELECT COUNT(*) AS total_antigo FROM access_points;
 SELECT COUNT(*) AS total_novo FROM equipamentos WHERE tipo = 'access-point';
 
--- 4) Confira os dados migrados.
-SELECT id, unidade_id, fabricante, modelo, status, detalhes
+-- 6) Confira os dados e a unicidade do MAC por unidade.
+SELECT id, unidade_id, fabricante, modelo, mac_address, status, detalhes
 FROM equipamentos
 WHERE tipo = 'access-point'
 ORDER BY unidade_id, id;
 
--- NÃO exclua access_points agora.
--- Após validar os totais, o cadastro, a edição e a exclusão pela aplicação,
--- a tabela antiga poderá ser removida em uma etapa separada.
+-- NÃO remova access_points ainda.
+-- Depois de testar listagem, cadastro, edição e exclusão na aplicação,
+-- a tabela antiga poderá ser removida em outra migração.
