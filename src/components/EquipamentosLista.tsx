@@ -278,6 +278,16 @@ export default function EquipamentosLista({
     }
   }
 
+  const equipamentosDaTela = equipamentos.filter(
+    (item) => !tipoFiltro || item.tipo === tipoFiltro,
+  );
+  const equipamentosOk = equipamentosDaTela.filter((item) =>
+    ["disponivel", "em-uso", "reserva"].includes(statusCanonico(item.status)),
+  ).length;
+  const precisamAtencao = equipamentosDaTela.filter((item) =>
+    ["em-reparo", "para-descarte"].includes(statusCanonico(item.status)),
+  ).length;
+
   const titulo = tipoFiltro ? PLURAIS[tipoFiltro] : "Todos os equipamentos";
   const th = "whitespace-nowrap px-3 py-3 font-semibold";
   const td = "px-3 py-3 align-middle text-gray-700 dark:text-gray-300";
@@ -307,6 +317,44 @@ export default function EquipamentosLista({
             + Cadastrar equipamento
           </Link>
         </div>
+
+        <section
+          aria-label="Resumo dos equipamentos"
+          className="mb-4 grid gap-3 sm:grid-cols-3"
+        >
+          {[
+            {
+              titulo: "Equipamentos cadastrados",
+              valor: equipamentosDaTela.length,
+              descricao: "Total registrado nesta unidade",
+            },
+            {
+              titulo: "Status OK",
+              valor: equipamentosOk,
+              descricao: "Disponíveis, em uso ou reserva",
+            },
+            {
+              titulo: "Precisam de atenção",
+              valor: precisamAtencao,
+              descricao: "Em reparo ou destinados à baixa",
+            },
+          ].map((card) => (
+            <article
+              key={card.titulo}
+              className="rounded-xl border border-teal-100 bg-white p-5 shadow-sm dark:border-[#2b454c] dark:bg-[#1c2a33]"
+            >
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                {card.titulo}
+              </p>
+              <p className="mt-3 text-3xl font-semibold text-gray-900 dark:text-gray-100">
+                {carregando ? "—" : card.valor}
+              </p>
+              <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                {card.descricao}
+              </p>
+            </article>
+          ))}
+        </section>
 
         <div className="mb-4 grid gap-3 rounded-2xl border border-teal-100 bg-white p-4 shadow-sm sm:grid-cols-[1fr_200px] dark:border-[#2b454c] dark:bg-[#1c2a33]">
           <input
