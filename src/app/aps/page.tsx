@@ -11,13 +11,17 @@ const badge:Record<string,string>={OK:"border-green-300 bg-green-50 text-green-8
 export default function AccessPointsPage(){
  const router=useRouter();const searchParams=useSearchParams();const abrirId=searchParams.get("editar");const {unidadeAtiva,unidadeCarregada}=useUnidade();const [aps,setAps]=useState<AP[]>([]),[carregando,setCarregando]=useState(true),[erro,setErro]=useState(""),[busca,setBusca]=useState(""),[bloco,setBloco]=useState("todos"),[status,setStatus]=useState("todos"),[modal,setModal]=useState(false),[form,setForm]=useState<Form>(vazio),[salvando,setSalvando]=useState(false),[mensagem,setMensagem]=useState("");
  const carregar=useCallback(async()=>{if(!unidadeCarregada)return;setCarregando(true);setErro("");try{const r=await fetch("/api/aps?unidade="+encodeURIComponent(unidadeAtiva),{cache:"no-store",credentials:"same-origin"}),d=await r.json().catch(()=>[]);if(!r.ok)throw new Error(d.erro||"Falha ao carregar APs.");setAps(Array.isArray(d)?d:[]);}catch(e){setErro(e instanceof Error?e.message:"Erro ao carregar APs.");}finally{setCarregando(false);}},[unidadeAtiva,unidadeCarregada]);
- useEffect(()=>{void carregar()},[carregar]);
+ // Consulta inicial; carregar atualiza os estados de carregamento e erro.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(()=>{void carregar()},[carregar]);
  const blocos=useMemo(()=>Array.from(new Set(aps.map(a=>a.bloco))).sort((a,b)=>a.localeCompare(b,"pt-BR")),[aps]);
  const filtrados=useMemo(()=>{const q=busca.trim().toLocaleLowerCase("pt-BR");return aps.filter(a=>(bloco==="todos"||a.bloco===bloco)&&(status==="todos"||a.status===status)&&(!q||[a.bloco,a.rack,a.marca,a.modelo,a.macAddress].some(v=>v.toLocaleLowerCase("pt-BR").includes(q))))},[aps,bloco,status,busca]);
  const novo=()=>{setForm(vazio);setErro("");setModal(true)};
  const editar=(a:AP)=>{router.push(`/cadastros/equipamentos/${encodeURIComponent(a.id)}/editar?returnTo=${encodeURIComponent("/aps")}`)};
  const fecharModal=()=>{setModal(false);if(abrirId)router.replace("/aps")};
- useEffect(()=>{if(carregando||!abrirId)return;const ap=aps.find(a=>a.id===abrirId);if(ap)router.replace(`/cadastros/equipamentos/${encodeURIComponent(ap.id)}/editar?returnTo=${encodeURIComponent("/aps")}`);else setErro("Não foi possível localizar esse access point nesta unidade.")},[carregando,aps,abrirId,router]);
+ // Redireciona links legados de edição para o inventário universal.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(()=>{if(carregando||!abrirId)return;const ap=aps.find(a=>a.id===abrirId);if(ap)router.replace(`/cadastros/equipamentos/${encodeURIComponent(ap.id)}/editar?returnTo=${encodeURIComponent("/aps")}`);else setErro("Não foi possível localizar esse access point nesta unidade.")},[carregando,aps,abrirId,router]);
  const salvar=async(e:React.FormEvent<HTMLFormElement>)=>{e.preventDefault();setSalvando(true);setErro("");setMensagem("");try{const r=await fetch("/api/aps?unidade="+encodeURIComponent(unidadeAtiva),{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify(form)}),d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.erro||"Falha ao salvar.");setModal(false);setMensagem("Access point cadastrado.");await carregar()}catch(e){setErro(e instanceof Error?e.message:"Erro ao salvar.")}finally{setSalvando(false)}};
  const excluir=async(a:AP)=>{if(!window.confirm("Excluir o AP "+a.bloco+" — "+a.macAddress+"?"))return;setErro("");setMensagem("");try{const r=await fetch("/api/aps?unidade="+encodeURIComponent(unidadeAtiva)+"&id="+encodeURIComponent(a.id),{method:"DELETE",credentials:"same-origin"}),d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.erro||"Falha ao excluir.");setMensagem("Access point excluído.");await carregar()}catch(e){setErro(e instanceof Error?e.message:"Erro ao excluir.")}};
  const saudaveis=aps.filter(a=>a.status==="OK").length;

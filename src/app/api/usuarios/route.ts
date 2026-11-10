@@ -80,14 +80,11 @@ export async function GET() {
 
     const usuarioAtual = auth.usuario!;
 
-    let rows: UsuarioRow[];
-
-    const [resultado] = await pool.query<UsuarioRow[]>(
+    const [rows] = await pool.query<UsuarioRow[]>(
       `SELECT id, nome, usuario, perfil, ativo, unidade_id,
               (senha_hash IS NULL) AS precisa_ativar, created_at
        FROM usuarios ORDER BY created_at DESC, nome ASC`,
     );
-    rows = resultado;
 
     return NextResponse.json(
       rows.map((row) => ({

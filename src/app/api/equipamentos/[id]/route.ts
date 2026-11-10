@@ -71,14 +71,6 @@ async function verificarAutenticacao(): Promise<ResultadoAutenticacao> {
   }
 }
 
-function ehAdministradorGeral(usuario: UsuarioAutenticado): boolean {
-  // Compatibilidade temporária com o perfil antigo "admin".
-  return (
-    usuario.perfil === "admin_geral" ||
-    usuario.perfil === "admin"
-  );
-}
-
 function texto(valor: unknown): string {
   return typeof valor === "string" || typeof valor === "number"
     ? String(valor).trim()

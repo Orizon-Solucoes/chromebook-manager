@@ -26,7 +26,6 @@ export default function Sidebar({
   const {
     unidadeAtiva,
     setUnidadeAtiva,
-    administradorGeral,
     podeAlternarUnidade,
     unidadeCarregada,
   } = useUnidade();
