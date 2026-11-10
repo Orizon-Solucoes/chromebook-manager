@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Lint e build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.6
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: Verificar lint
+        run: pnpm lint
+
+      - name: Compilar aplicação
+        run: pnpm build
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 4000
+          DB_USER: ci
+          DB_PASSWORD: ci
+          DB_NAME: chromebook_manager
