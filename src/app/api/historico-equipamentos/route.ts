@@ -100,12 +100,8 @@ async function verificarAutenticacao(): Promise<ResultadoAutenticacao> {
   }
 }
 
-function ehAdministradorGeral(usuario: UsuarioAutenticado): boolean {
-  // Mantém o perfil antigo durante a migração da conta administrativa.
-  return (
-    usuario.perfil === "admin_geral" ||
-    usuario.perfil === "admin"
-  );
+function ehAdministrador(usuario: UsuarioAutenticado): boolean {
+  return usuario.perfil === "admin";
 }
 
 function unidadeValida(valor: unknown): valor is UnidadeId {
@@ -309,7 +305,7 @@ export async function GET(request: Request) {
   }
 
   const usuario = autenticacao.usuario;
-  const administradorGeral = ehAdministradorGeral(usuario);
+  const administrador = ehAdministrador(usuario);
 
   const url = new URL(request.url);
   const unidadeSolicitada = url.searchParams.get("unidade");
@@ -318,7 +314,7 @@ export async function GET(request: Request) {
     return erroJson("Selecione uma unidade válida: CE ou JP.", 400);
   }
 
-  if (!administradorGeral && usuario.unidade_id !== "AMBOS" && unidadeSolicitada && unidadeSolicitada !== usuario.unidade_id) {
+  if (!administrador && usuario.unidade_id !== "AMBOS" && unidadeSolicitada && unidadeSolicitada !== usuario.unidade_id) {
     return erroJson(
       "Você não tem permissão para acessar outra unidade.",
       403,
@@ -338,7 +334,7 @@ export async function GET(request: Request) {
       }
       condicoes.push("e.unidade_id = ?");
       parametros.push(unidadeSolicitada);
-    } else if (usuario.unidade_id === "AMBOS" || administradorGeral) {
+    } else if (usuario.unidade_id === "AMBOS" || administrador) {
       // Sem unidade explícita, usuários com acesso duplo consultam ambas.
     } else {
       if (!unidadeValida(usuario.unidade_id)) {

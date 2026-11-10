@@ -106,7 +106,7 @@ export async function POST(request: Request) {
     await conexao.execute(
       `INSERT INTO usuarios
         (id, nome, usuario, senha_hash, ativo, perfil, unidade_id)
-       VALUES (?, ?, ?, ?, 1, 'admin_geral', 'CE')`,
+       VALUES (?, ?, ?, ?, 1, 'admin', NULL)`,
       [id, nome, usuario, senhaHash],
     );
 
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         sucesso: true,
-        mensagem: "Administrador geral criado. Faça login para continuar.",
+        mensagem: "Administrador criado. Faça login para continuar.",
       },
       {
         status: 201,

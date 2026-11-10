@@ -70,7 +70,7 @@ export default function Sidebar({
     };
   }, []);
 
-  const podeGerenciarUsuarios = ["admin", "admin_geral"].includes(perfil);
+  const podeGerenciarUsuarios = perfil === "admin";
 
   const grupos: { titulo: string; links: ItemLink[] }[] = [
     {
@@ -209,12 +209,7 @@ export default function Sidebar({
     }
   }
 
-  const nomePerfil =
-    perfil === "admin_geral" || perfil === "admin"
-      ? "Administrador geral"
-      : perfil === "admin_unidade"
-        ? "Administrador da unidade"
-        : "Usuário";
+  const nomePerfil = perfil === "admin" ? "Administrador" : "Usuário";
 
   return (
     <aside

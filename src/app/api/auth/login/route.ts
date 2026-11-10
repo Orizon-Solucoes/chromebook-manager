@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import type { RowDataPacket } from "mysql2/promise";
 import { pool } from "@/lib/db";
-import { criarSessao, verificarSenha } from "@/lib/auth";
+import { criarSessao, normalizarPerfil, verificarSenha } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -70,6 +70,7 @@ export async function POST(request: Request) {
     }
 
     const token = await criarSessao(conta.id);
+    const perfil = normalizarPerfil(conta.perfil);
 
     const resposta = NextResponse.json(
       {
@@ -78,9 +79,9 @@ export async function POST(request: Request) {
           id: conta.id,
           nome: conta.nome,
           usuario: conta.usuario,
-          perfil: conta.perfil,
-          unidade_id: conta.unidade_id,
-          administradorGeral: conta.perfil === "admin_geral",
+          perfil,
+          unidade_id: perfil === "admin" ? "AMBOS" : conta.unidade_id ?? "AMBOS",
+          administradorGeral: perfil === "admin",
         },
       },
       {

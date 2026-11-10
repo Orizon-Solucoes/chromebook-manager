@@ -1,7 +1,7 @@
 
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { obterUsuarioSessao } from "@/lib/auth";
+import { ehAdministrador, obterUsuarioSessao } from "@/lib/auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -51,7 +51,7 @@ export async function GET() {
           usuario: usuario.usuario,
           perfil: usuario.perfil,
           unidade_id: usuario.unidade_id,
-          administradorGeral: usuario.perfil === "admin_geral",
+          administradorGeral: ehAdministrador(usuario),
         },
       },
       { headers: CABECALHOS_SEGUROS },

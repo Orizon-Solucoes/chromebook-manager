@@ -55,9 +55,7 @@ export function UnidadeProvider({
         if (!usuario || cancelado) return;
 
         const geral =
-          usuario.administradorGeral === true ||
-          usuario.perfil === "admin_geral" ||
-          usuario.perfil === "admin";
+          usuario.perfil === "admin" || usuario.administradorGeral === true;
 
         setAdministradorGeral(geral);
         const podeAlternar = geral || usuario.unidade_id === "AMBOS";
@@ -96,7 +94,7 @@ export function UnidadeProvider({
     (unidade: UnidadeId) => {
       if (!unidadeValida(unidade)) return;
 
-      // Só administrador geral ou contas com acesso aos dois colégios podem alternar.
+      // Só administradores ou usuários com acesso aos dois colégios podem alternar.
       if (!podeAlternarUnidade) return;
 
       definirUnidade(unidade);

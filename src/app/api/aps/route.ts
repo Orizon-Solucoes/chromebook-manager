@@ -22,7 +22,7 @@ async function contexto(request: Request) {
   const usuario = await obterUsuarioAutenticado();
   if (!usuario) return { erro: erro("Não autenticado.", 401) } as const;
   const p = new URL(request.url).searchParams.get("unidade");
-  const geral = usuario.perfil === "admin_geral" || usuario.perfil === "admin";
+  const geral = usuario.perfil === "admin";
   const podeAlternar = geral || usuario.unidade_id === "AMBOS";
   const propria = ehUnidade(usuario.unidade_id) ? usuario.unidade_id : "CE";
   if (p && !ehUnidade(p)) return { erro: erro("Unidade inválida.", 400) } as const;

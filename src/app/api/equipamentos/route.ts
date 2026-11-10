@@ -87,13 +87,8 @@ async function verificarAutenticacao(): Promise<ResultadoAutenticacao> {
   }
 }
 
-function ehAdministradorGeral(usuario: UsuarioAutenticado): boolean {
-  // "admin" é mantido temporariamente para compatibilidade
-  // com a conta administrativa existente durante a migração.
-  return (
-    usuario.perfil === "admin_geral" ||
-    usuario.perfil === "admin"
-  );
+function ehAdministrador(usuario: UsuarioAutenticado): boolean {
+  return usuario.perfil === "admin";
 }
 
 function unidadeValida(valor: unknown): valor is UnidadeId {
@@ -200,8 +195,8 @@ export async function GET(request: Request) {
   }
 
   const usuario = autenticacao.usuario;
-  const administradorGeral = ehAdministradorGeral(usuario);
-  const podeAlternarUnidade = administradorGeral || usuario.unidade_id === "AMBOS";
+  const administrador = ehAdministrador(usuario);
+  const podeAlternarUnidade = administrador || usuario.unidade_id === "AMBOS";
 
   const parametros = new URL(request.url).searchParams;
   const tipoParaSugestao = parametros.get("tipo");
@@ -296,8 +291,8 @@ export async function POST(request: Request) {
   }
 
   const usuario = autenticacao.usuario;
-  const administradorGeral = ehAdministradorGeral(usuario);
-  const podeAlternarUnidade = administradorGeral || usuario.unidade_id === "AMBOS";
+  const administrador = ehAdministrador(usuario);
+  const podeAlternarUnidade = administrador || usuario.unidade_id === "AMBOS";
 
   try {
     const entrada: unknown = await request.json();

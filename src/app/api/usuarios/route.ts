@@ -23,13 +23,8 @@ function erro(mensagem: string, status: number) {
   );
 }
 
-function ehAdministradorGeral(usuario: UsuarioAutenticado): boolean {
-  // "admin" permanece temporariamente por compatibilidade
-  // com a conta administrativa antiga durante a migração.
-  return (
-    usuario.perfil === "admin_geral" ||
-    usuario.perfil === "admin"
-  );
+function ehAdministrador(usuario: UsuarioAutenticado): boolean {
+  return usuario.perfil === "admin" || usuario.perfil === "admin_geral";
 }
 
 function unidadeValida(valor: unknown): valor is UnidadeId {
@@ -46,7 +41,7 @@ async function administrador() {
     };
   }
 
-  const autorizado = ehAdministradorGeral(usuario);
+  const autorizado = ehAdministrador(usuario);
 
   if (!autorizado) {
     return {
@@ -91,8 +86,8 @@ export async function GET() {
         id: row.id,
         nome: row.nome,
         usuario: row.usuario,
-        perfil: row.perfil,
-        unidadeId: row.unidade_id ?? "AMBOS",
+        perfil: ehAdministrador({ perfil: row.perfil } as UsuarioAutenticado) ? "admin" : "usuario",
+        unidadeId: ehAdministrador({ perfil: row.perfil } as UsuarioAutenticado) ? "AMBOS" : row.unidade_id ?? "AMBOS",
         ativo: Number(row.ativo) === 1,
         precisaAtivar: Number(row.precisa_ativar) === 1,
         criadoEm: row.created_at,
@@ -154,11 +149,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const unidadeRecebida = body.unidadeId ?? body.unidade_id;
-    if (!unidadeValida(unidadeRecebida)) {
-      return erro("Selecione uma unidade válida: CE, JP ou AMBOS.", 400);
-    }
-    const unidadeId: UnidadeId = unidadeRecebida;
+    const perfilRecebido = body.perfil === undefined ? "usuario" : body.perfil;
+    if (perfilRecebido !== "admin" && perfilRecebido !== "usuario") return erro("Selecione um perfil válido: admin ou usuario.", 400);
+    const unidadeRecebida = body.unidadeId ?? body.unidade_id ?? "CE";
+    if (perfilRecebido === "usuario" && !unidadeValida(unidadeRecebida)) return erro("Selecione uma unidade válida: CE, JP ou AMBOS.", 400);
+    const perfil: "admin" | "usuario" = perfilRecebido;
+    const unidadeId: UnidadeId = perfil === "admin" ? "AMBOS" : unidadeRecebida as UnidadeId;
 
     const id = randomUUID();
     const codigo = randomBytes(8).toString("hex").toUpperCase();
@@ -177,8 +173,8 @@ export async function POST(request: Request) {
          ativo,
          unidade_id
        )
-       VALUES (?, ?, ?, NULL, ?, 'usuario', 1, ?)`,
-      [id, nome, usuario, codigoHash, unidadeId === "AMBOS" ? null : unidadeId],
+       VALUES (?, ?, ?, NULL, ?, ?, 1, ?)`,
+      [id, nome, usuario, codigoHash, perfil, perfil === "admin" || unidadeId === "AMBOS" ? null : unidadeId],
     );
 
     return NextResponse.json(
@@ -188,7 +184,7 @@ export async function POST(request: Request) {
           id,
           nome,
           usuario,
-          perfil: "usuario",
+          perfil,
           unidadeId,
           precisaAtivar: true,
         },

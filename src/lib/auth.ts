@@ -12,11 +12,7 @@ import { pool } from "@/lib/db";
 
 const DURACAO_SESSAO_DIAS = 7;
 
-export type PerfilUsuario =
-  | "admin_geral"
-  | "admin_unidade"
-  | "usuario"
-  | "admin";
+export type PerfilUsuario = "admin" | "usuario";
 
 export type UnidadeId = "CE" | "JP";
 export type UnidadeAcesso = UnidadeId | "AMBOS";
@@ -97,17 +93,22 @@ export async function criarAdministrador(
   await pool.execute(
     `INSERT INTO usuarios
       (id, nome, usuario, senha_hash, ativo, perfil, unidade_id)
-     VALUES (?, ?, ?, ?, 1, 'admin_geral', 'CE')`,
+     VALUES (?, ?, ?, ?, 1, 'admin', NULL)`,
     [id, nome, usuario, senhaHash],
   );
 
   return { id, nome, usuario };
 }
 
-export function ehAdministradorGeral(
+export function ehAdministrador(
   usuario: Pick<UsuarioAutenticado, "perfil"> | null,
 ): boolean {
-  return usuario?.perfil === "admin_geral";
+  return usuario?.perfil === "admin";
+}
+
+// Compatibilidade temporária com contas antigas até a migração do banco.
+export function normalizarPerfil(perfil: string): PerfilUsuario {
+  return perfil === "admin" || perfil === "admin_geral" ? "admin" : "usuario";
 }
 
 export function podeAcessarUnidade(
@@ -118,16 +119,11 @@ export function podeAcessarUnidade(
     return false;
   }
 
-  if (usuario.perfil === "admin_geral" || usuario.perfil === "admin") {
+  if (normalizarPerfil(usuario.perfil) === "admin") {
     return unidadeId === "CE" || unidadeId === "JP";
   }
 
-  if (
-    usuario.perfil !== "admin_unidade" &&
-    usuario.perfil !== "usuario"
-  ) {
-    return false;
-  }
+  if (normalizarPerfil(usuario.perfil) !== "usuario") return false;
 
   return usuario.unidade_id === "AMBOS" || usuario.unidade_id === unidadeId;
 }
@@ -163,8 +159,13 @@ export async function obterUsuarioSessao(
     return null;
   }
 
-  // NULL representa acesso às duas unidades; a aplicação usa "AMBOS".
-  return { ...row, unidade_id: row.unidade_id ?? "AMBOS" };
+  // Normaliza perfis antigos sem exigir a migração imediata do banco.
+  const perfil = normalizarPerfil(row.perfil);
+  return {
+    ...row,
+    perfil,
+    unidade_id: perfil === "admin" ? "AMBOS" : row.unidade_id ?? "AMBOS",
+  };
 }
 
 export async function obterUsuarioAutenticado() {

@@ -59,7 +59,7 @@ export default function AuthGuard({
 
         if (
           pathname.startsWith("/usuarios") &&
-          !["admin", "admin_geral", "admin_unidade"].includes(perfil)
+          perfil !== "admin"
         ) {
           router.replace("/");
           return;
