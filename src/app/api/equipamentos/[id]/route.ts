@@ -277,52 +277,82 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> },
 ) {
   const autenticacao = await verificarAutenticacao();
-
-  if (autenticacao.erro) {
-    return autenticacao.erro;
-  }
+  if (autenticacao.erro) return autenticacao.erro;
 
   const usuario = autenticacao.usuario;
   const { id } = await context.params;
+  let conexao: Awaited<ReturnType<typeof pool.getConnection>> | null = null;
+  let transacaoIniciada = false;
 
   try {
-    const equipamento = await obterEquipamentoPermitido(id, usuario);
+    const permitido = await obterEquipamentoPermitido(id, usuario);
+    if (!permitido) return erroJson("Equipamento não encontrado.", 404);
 
-    if (!equipamento) {
+    conexao = await pool.getConnection();
+    await conexao.beginTransaction();
+    transacaoIniciada = true;
+
+    const [equipamentos] = await conexao.execute<
+      (RowDataPacket & { id: string; unidade_id: string })[]
+    >(
+      "SELECT id, unidade_id FROM equipamentos WHERE id = ? FOR UPDATE",
+      [id],
+    );
+    const equipamento = equipamentos[0];
+
+    if (!equipamento || equipamento.unidade_id !== permitido.unidade_id) {
+      await conexao.rollback();
+      transacaoIniciada = false;
       return erroJson("Equipamento não encontrado.", 404);
     }
 
-    const [resultado] = await pool.execute<ResultSetHeader>(
-      `
-        DELETE FROM equipamentos
-        WHERE id = ? AND unidade_id = ?
-      `,
+    if (!podeAcessarUnidade(usuario, equipamento.unidade_id)) {
+      await conexao.rollback();
+      transacaoIniciada = false;
+      return erroJson("Você não tem permissão para excluir este equipamento.", 403);
+    }
+
+    const [historicos] = await conexao.execute<
+      (RowDataPacket & { total: number })[]
+    >(
+      "SELECT COUNT(*) AS total FROM historico_equipamentos WHERE equipamento_id = ?",
+      [id],
+    );
+
+    if (Number(historicos[0]?.total ?? 0) > 0) {
+      await conexao.rollback();
+      transacaoIniciada = false;
+      return erroJson(
+        "Este equipamento possui histórico vinculado e não pode ser excluído. Preserve os registros e altere o status para Inativo, se necessário.",
+        409,
+      );
+    }
+
+    const [resultado] = await conexao.execute<ResultSetHeader>(
+      "DELETE FROM equipamentos WHERE id = ? AND unidade_id = ?",
       [id, equipamento.unidade_id],
     );
 
     if (resultado.affectedRows === 0) {
+      await conexao.rollback();
+      transacaoIniciada = false;
       return erroJson("Equipamento não encontrado.", 404);
     }
+
+    await conexao.commit();
+    transacaoIniciada = false;
 
     return NextResponse.json(
       { sucesso: true, id },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (erro) {
-    const erroBanco = erro as { code?: string };
-
-    if (
-      erroBanco.code === "ER_ROW_IS_REFERENCED_2" ||
-      erroBanco.code === "ER_ROW_IS_REFERENCED"
-    ) {
-      return erroJson(
-        "Este equipamento possui histórico vinculado e não pode ser excluído. Preserve o histórico e altere o status para Inativo, se necessário.",
-        409,
-      );
+    if (conexao && transacaoIniciada) {
+      try { await conexao.rollback(); } catch { /* transação já encerrada */ }
     }
-
     console.error("Erro ao excluir equipamento:", erro);
-
     return erroJson("Não foi possível excluir o equipamento.", 500);
+  } finally {
+    conexao?.release();
   }
 }

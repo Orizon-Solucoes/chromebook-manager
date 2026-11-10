@@ -141,19 +141,67 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const c = await contexto(request);
+  if ("erro" in c) return c.erro;
+
+  const id = new URL(request.url).searchParams.get("id")?.trim();
+  if (!id) return erro("ID do AP não informado.", 400);
+
+  const conexao = await pool.getConnection();
+  let transacaoIniciada = false;
+
   try {
-    const c = await contexto(request); if ("erro" in c) return c.erro;
-    const id = new URL(request.url).searchParams.get("id")?.trim();
-    if (!id) return erro("ID do AP não informado.", 400);
-    const [r] = await pool.execute<ResultSetHeader>(
-      "DELETE FROM equipamentos WHERE id = ? AND unidade_id = ? AND tipo = 'access-point'", [id, c.unidade],
+    await conexao.beginTransaction();
+    transacaoIniciada = true;
+
+    const [aps] = await conexao.execute<
+      (RowDataPacket & { id: string; unidade_id: string })[]
+    >(
+      "SELECT id, unidade_id FROM equipamentos WHERE id = ? AND tipo = 'access-point' FOR UPDATE",
+      [id],
     );
-    if (!r.affectedRows) return erro("AP não encontrado nesta unidade.", 404);
+    const ap = aps[0];
+
+    if (!ap || ap.unidade_id !== c.unidade) {
+      await conexao.rollback();
+      transacaoIniciada = false;
+      return erro("AP não encontrado nesta unidade.", 404);
+    }
+
+    const [historicos] = await conexao.execute<
+      (RowDataPacket & { total: number })[]
+    >(
+      "SELECT COUNT(*) AS total FROM historico_equipamentos WHERE equipamento_id = ?",
+      [id],
+    );
+
+    if (Number(historicos[0]?.total ?? 0) > 0) {
+      await conexao.rollback();
+      transacaoIniciada = false;
+      return erro("Este AP possui histórico vinculado e não pode ser excluído. Preserve os registros e altere o status para Inativo, se necessário.", 409);
+    }
+
+    const [resultado] = await conexao.execute<ResultSetHeader>(
+      "DELETE FROM equipamentos WHERE id = ? AND unidade_id = ? AND tipo = 'access-point'",
+      [id, c.unidade],
+    );
+
+    if (!resultado.affectedRows) {
+      await conexao.rollback();
+      transacaoIniciada = false;
+      return erro("AP não encontrado nesta unidade.", 404);
+    }
+
+    await conexao.commit();
+    transacaoIniciada = false;
     return NextResponse.json({ sucesso: true }, { headers: { "Cache-Control": "no-store" } });
   } catch (e) {
-    const code = (e as { code?: string }).code;
-    if (code === "ER_ROW_IS_REFERENCED_2" || code === "ER_ROW_IS_REFERENCED") return erro("Este AP possui histórico vinculado e não pode ser excluído.", 409);
+    if (transacaoIniciada) {
+      try { await conexao.rollback(); } catch { /* transação já encerrada */ }
+    }
     console.error("Erro ao excluir AP:", e);
     return erro("Não foi possível excluir o AP.", 500);
+  } finally {
+    conexao.release();
   }
 }
