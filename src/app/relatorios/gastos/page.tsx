@@ -143,7 +143,7 @@ export default function RelatorioGastosPage() {
         .toLocaleDateString("pt-BR", { month: "short" })
         .replace(".", "");
 
-      const valor = gastos
+      const valor = filtrados
         .filter((item) => (item.data || "").slice(0, 7) === chave)
         .reduce((soma, item) => soma + (Number(item.custo) || 0), 0);
 

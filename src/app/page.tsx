@@ -50,17 +50,6 @@ const ROTAS_CATEGORIAS: Record<string, string> = {
   "access-point": "/aps",
 };
 
-const STATUS: Record<string, string> = {
-  disponivel: "Disponível",
-  "em-uso": "Em uso",
-  reserva: "Reserva",
-  reservado: "Reservado",
-  "em-reparo": "Em reparo",
-  "em-manutencao": "Em manutenção",
-  inativo: "Inativo",
-  "para-descarte": "Para descarte",
-};
-
 const TIPOS_HISTORICO: Record<string, string> = {
   manutencao: "Manutenção",
   "reposicao-de-peca": "Reposição de peça",

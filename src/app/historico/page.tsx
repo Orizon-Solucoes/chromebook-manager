@@ -160,12 +160,6 @@ export default function HistoricoPage() {
     (item) => item.tipo === "retorno-de-reparo",
   ).length;
 
-  const equipamentosAtendidos = new Set(
-    registros
-      .filter((item) => servicos.has(item.tipo))
-      .map((item) => item.equipamentoId),
-  ).size;
-
   function moeda(valor: number) {
     return valor.toLocaleString("pt-BR", {
       style: "currency",
