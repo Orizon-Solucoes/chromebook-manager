@@ -1,6 +1,11 @@
--- Migração de access_points para equipamentos
--- Faça backup do banco antes de executar.
--- Execute este arquivo uma única vez, na ordem apresentada.
+-- MIGRAÇÃO HISTÓRICA: access_points -> equipamentos.
+-- Esta migração já foi aplicada no banco de produção em 09/11/2026.
+-- A tabela antiga access_points foi removida após a validação em 10/11/2026.
+-- NÃO EXECUTE ESTE ARQUIVO NOVAMENTE: ele não é idempotente.
+-- O SQL abaixo é mantido somente como registro do procedimento realizado.
+--
+-- Antes de executar migrações em qualquer outro ambiente, confira o esquema
+-- atual e aplique somente as alterações que ainda não existirem.
 
 -- 1) Pré-validação: precisa retornar ZERO linhas (IDs não podem colidir).
 SELECT ap.id
@@ -43,16 +48,16 @@ SELECT
   ap.unidade_id
 FROM access_points ap;
 
--- 5) Validação: estes dois totais precisam ser iguais.
+-- 5) Validação realizada durante a migração: os totais antigo e novo deveriam ser iguais.
 SELECT COUNT(*) AS total_antigo FROM access_points;
 SELECT COUNT(*) AS total_novo FROM equipamentos WHERE tipo = 'access-point';
 
--- 6) Confira os dados e a unicidade do MAC por unidade.
+-- 6) Consulta de conferência utilizada após a migração.
 SELECT id, unidade_id, fabricante, modelo, mac_address, status, detalhes
 FROM equipamentos
 WHERE tipo = 'access-point'
 ORDER BY unidade_id, id;
 
--- NÃO remova access_points ainda.
--- Depois de testar listagem, cadastro, edição e exclusão na aplicação,
--- a tabela antiga poderá ser removida em outra migração.
+-- A tabela antiga foi removida somente depois dos testes de listagem,
+-- cadastro, edição e exclusão. Este arquivo não deve ser usado para
+-- recriar ou alterar a estrutura atual do banco.
