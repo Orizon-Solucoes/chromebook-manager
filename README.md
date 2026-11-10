@@ -2,29 +2,30 @@
 
 Sistema web para gerenciamento de equipamentos de TI, manutenção e gastos em ambiente escolar.
 
-O **Chromebook Manager** está em desenvolvimento e busca centralizar o cadastro do patrimônio, o acompanhamento dos reparos e a consulta dos custos de manutenção. O projeto também está sendo preparado para atender mais de uma unidade escolar, com acesso definido pelas permissões de cada usuário.
+O **Chromebook Manager** centraliza o cadastro do patrimônio, o acompanhamento de manutenções e reparos e a consulta dos custos. O sistema atende as unidades Campos Elíseos (CE) e Jardim Primavera (JP), com acesso controlado por usuário e unidade.
 
 ## ✨ Módulos e funcionalidades
 
 ### 📦 Equipamentos
 
-- Cadastro, consulta e edição de equipamentos.
-- Pesquisa por informações do equipamento, como identificação, modelo, número de série, MAC e localização, conforme os campos disponíveis.
+- Cadastro, consulta, edição e exclusão de equipamentos.
+- Inventário unificado para Chromebooks, notebooks, projetores, catracas, impressoras e Access Points.
+- Pesquisa por identificação, modelo, número de série, MAC e localização, conforme os campos disponíveis.
 - Filtros por tipo e situação.
-- Acompanhamento de equipamentos disponíveis, em uso, em reserva, em reparo e destinados ao descarte, conforme os fluxos implementados.
+- Consulta dos equipamentos por unidade.
 
 ### 🔧 Manutenção e reparos
 
-- Registro e consulta do histórico de manutenção.
+- Registro e consulta do histórico de serviços.
 - Acompanhamento de envios para reparo e retornos.
-- Registro e consulta de custos relacionados aos serviços.
-- Consulta dos registros associados a cada equipamento.
+- Registro de diagnóstico, descrição, responsável, destino e custos, conforme o tipo de registro.
+- Anexos associados aos registros do histórico.
 
 ### 📊 Dashboard e relatórios
 
-- Indicadores gerais dos equipamentos e das manutenções.
-- Relatório de gastos com filtros.
-- Consulta de custos por período e equipamento.
+- Indicadores gerais dos equipamentos e dos serviços.
+- Relatório de gastos com filtros por período e equipamento.
+- Consulta de custos relacionados aos registros do histórico.
 - Exportação CSV nas áreas em que a opção está disponível.
 
 ### 🎨 Interface
@@ -33,7 +34,7 @@ O **Chromebook Manager** está em desenvolvimento e busca centralizar o cadastro
 - Interface responsiva.
 - Navegação entre os módulos do sistema.
 
-> **Status:** projeto em desenvolvimento. A lista de módulos e recursos pode mudar conforme as funcionalidades forem implementadas e testadas.
+> **Status:** projeto em desenvolvimento. As funcionalidades devem ser consideradas concluídas somente após validação no ambiente utilizado pela equipe.
 
 ## 🛠️ Tecnologias
 
@@ -110,7 +111,7 @@ DB_NAME=chromebook_manager
 
 **Importante:**
 - Substitua os valores de exemplo pelos dados corretos do banco.
-- Não compartilhe nem envie o arquivo `.env.local para o GitHub. Ele contém credenciais.
+- Não compartilhe nem envie o arquivo `.env.local` para o GitHub. Ele contém credenciais.
 - Não coloque senhas diretamente no código-fonte.
 - O banco precisa estar acessível a partir da sua conexão e o usuário precisa ter as permissões necessárias.
 - Para executar localmente, solicite as credenciais ao responsável pelo projeto; elas não são incluídas neste README.
@@ -150,20 +151,27 @@ pnpm lint
 
 ## 🗄️ Dados e unidades escolares
 
-O projeto utiliza conexão com banco de dados MySQL/TiDB configurada por variáveis de ambiente. Os dados persistidos no banco podem ser compartilhados entre ambientes autorizados que utilizem a mesma base.
+A aplicação utiliza MySQL/TiDB. Os equipamentos são armazenados na tabela universal `equipamentos`; os registros de serviços e seus anexos ficam nas tabelas `historico_equipamentos` e `historico_equipamento_anexos`.
 
-O sistema está sendo preparado para separar os dados de **Campos Elíseos** e **Jardim Primavera**, permitindo que funcionários acessem a unidade correspondente e que administradores autorizados tenham uma visão consolidada. O isolamento e as permissões precisam ser validados em cada fluxo antes de considerar essa parte concluída.
+O sistema separa os dados de **Campos Elíseos (CE)** e **Jardim Primavera (JP)**. A unidade ativa é selecionada conforme as permissões da conta, e as APIs verificam no servidor se o usuário pode acessar a unidade solicitada. A seleção salva no navegador não substitui essa validação.
 
-Faça alterações no banco com cuidado e mantenha um backup antes de mudanças estruturais ou operações em massa.
+### Access Points
+
+A migração de 09/11/2026 transferiu os Access Points para a tabela `equipamentos`, usando `tipo = 'access-point'`. O MAC fica em `mac_address`; os campos específicos, como bloco, rack e potência, ficam em `detalhes`.
+
+A tabela antiga `access_points` foi excluída do banco após a migração e a validação inicial. As rotas atuais de APs utilizam a tabela `equipamentos`.
+
+**Não execute novamente** `migrations/2026-11-09-unificar-access-points.sql`: o arquivo é o registro histórico da migração e não é idempotente. Ele adiciona coluna e índice e copia os registros da tabela antiga.
+
+Antes de qualquer alteração estrutural, faça backup e confira o esquema diretamente no ambiente autorizado.
 
 ## 🧭 Melhorias planejadas
 
-- Aperfeiçoar a navegação entre a Dashboard e as listas por tipo de equipamento.
-- Melhorar a legibilidade de botões e controles de interface.
-- Concluir a unificação dos dados e do histórico na tela do equipamento e validar o retorno à lista anterior.
-- Filtrar os equipamentos disponíveis para cadastro de retorno do reparo.
-- Revisar os relatórios de gastos e as permissões por unidade.
-- Evoluir os módulos de equipamentos gerais e estoque de peças e consumíveis.
+- Evoluir o acompanhamento de reparos, com etapas e informações específicas do atendimento.
+- Refinar os relatórios financeiros para destacar custos efetivos de reparo.
+- Melhorar a ficha individual dos equipamentos e adicionar QR Codes.
+- Ampliar auditoria de ações e controles administrativos.
+- Revisar desempenho, validações, testes e procedimentos de backup e recuperação.
 
 As tarefas acima representam melhorias planejadas e não devem ser interpretadas como recursos já concluídos.
 
@@ -171,15 +179,16 @@ As tarefas acima representam melhorias planejadas e não devem ser interpretadas
 
 ```text
 chromebook-manager/
+├── database/       # Scripts estruturais e migrações
 ├── src/
-│   ├── app/          # Páginas, rotas e APIs
-│   ├── components/   # Componentes da interface
-│   ├── lib/          # Banco de dados e regras compartilhadas
-│   └── types/        # Tipos e interfaces TypeScript
-├── public/           # Arquivos estáticos
-├── package.json      # Dependências e scripts
-├── pnpm-lock.yaml    # Versões resolvidas das dependências
-└── README.md         # Documentação do projeto
+│   ├── app/        # Páginas, rotas e APIs
+│   ├── components/ # Componentes da interface
+│   ├── lib/        # Banco de dados e regras compartilhadas
+│   └── types/      # Tipos e interfaces
+├── public/         # Arquivos estáticos
+├── package.json    # Dependências e scripts
+├── pnpm-lock.yaml  # Versões resolvidas das dependências
+└── README.md       # Documentação do projeto
 ```
 
 ## 🌐 Links do projeto
