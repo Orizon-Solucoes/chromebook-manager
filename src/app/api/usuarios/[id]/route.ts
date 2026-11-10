@@ -80,7 +80,10 @@ export async function PATCH(
       );
       if (Number(admins[0]?.total ?? 0) <= 1) return erro("O sistema precisa manter pelo menos um administrador ativo.", 409);
     }
-    const unidadeBanco = perfil === "admin" || unidade === "AMBOS" ? null : unidade;
+    const unidadeBanco: "CE" | "JP" | null =
+      perfil === "admin" || unidade === "AMBOS"
+        ? null
+        : (unidade as "CE" | "JP");
     const [resultado] = await pool.execute<ResultSetHeader>(
       "UPDATE usuarios SET nome = ?, usuario = ?, perfil = ?, unidade_id = ? WHERE id = ?",
       [nome, usuario, perfil, unidadeBanco, id],
