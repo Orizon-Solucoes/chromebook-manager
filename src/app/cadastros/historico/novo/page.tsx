@@ -120,7 +120,7 @@ export default function NovoHistoricoPage() {
     : equipamentosDisponiveis[0]?.id || "";
 
   function nomeEquipamento(item: Equipamento) {
-    const numero = item.patrimonio?.match(/(\\d+)$/)?.[1];
+    const numero = item.patrimonio?.match(/(\d+)$/)?.[1];
     const nome = item.tipo ? item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1) : "Equipamento";
     return [numero ? `${nome} ${numero}` : (item.patrimonio || nome), item.fabricante, item.modelo, item.localizacao].filter(Boolean).join(" - ");
   }
