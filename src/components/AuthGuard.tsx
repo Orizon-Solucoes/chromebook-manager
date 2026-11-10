@@ -30,6 +30,8 @@ export default function AuthGuard({
 
     if (paginaPublica) return;
 
+    // Reinicia o estado visual enquanto a sessão da nova rota é conferida.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setEstado("verificando");
 
     async function verificar() {
