@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUnidade } from "@/components/UnidadeProvider";
 
@@ -58,6 +58,7 @@ export default function NovoHistoricoPage() {
     if (!unidadeCarregada) return;
 
     // Evita exibir temporariamente equipamentos da unidade anterior ao alternar o colégio.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCarregando(true);
     setEquipamentos([]);
     setEventosReparo([]);
@@ -100,12 +101,35 @@ export default function NovoHistoricoPage() {
     return () => { ativo = false; };
   }, [unidadeAtiva, unidadeCarregada]);
 
+  const nomeTipo = TIPOS.find((item) => item.valor === tipo)?.nome ?? "Registro";
+  const equipamentosDisponiveis = useMemo(
+    () =>
+      tipo === "retorno-de-reparo"
+        ? equipamentos.filter(
+            (item) =>
+              item.status === "em-reparo" &&
+              eventosReparo.find((evento) => evento.equipamentoId === item.id)?.tipo === "envio-para-reparo",
+          )
+        : equipamentos,
+    [tipo, equipamentos, eventosReparo],
+  );
+  const equipamentoSelecionadoId = equipamentosDisponiveis.some(
+    (item) => item.id === equipamentoId,
+  )
+    ? equipamentoId
+    : equipamentosDisponiveis[0]?.id || "";
+
+  function nomeEquipamento(item: Equipamento) {
+    const numero = item.patrimonio?.match(/(\\d+)$/)?.[1];
+    const nome = item.tipo ? item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1) : "Equipamento";
+    return [numero ? `${nome} ${numero}` : (item.patrimonio || nome), item.fabricante, item.modelo, item.localizacao].filter(Boolean).join(" - ");
+  }
+
   async function salvar(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (salvando) return;
     setErro("");
-    if (!equipamentoId) { setErro(tipo === "retorno-de-reparo" ? "Não há equipamento aguardando retorno de reparo. Registre primeiro o envio para a assistência." : "Cadastre um equipamento antes de criar o histórico."); return; }
-    if (tipo === "retorno-de-reparo" && !equipamentosDisponiveis.some((item) => item.id === equipamentoId)) { setErro("O retorno só pode ser registrado para um equipamento enviado e ainda em reparo."); return; }
+    if (!equipamentoSelecionadoId) { setErro(tipo === "retorno-de-reparo" ? "Não há equipamento aguardando retorno de reparo. Registre primeiro o envio para a assistência." : "Cadastre um equipamento antes de criar o histórico."); return; }
     if (tipo === "envio-para-reparo" && !destinoReparo.trim()) { setErro("Informe a assistência técnica ou empresa de reparo."); return; }
     if (tipo === "retorno-de-reparo" && custo.trim() === "") { setErro("Informe o custo final do reparo. Se não houve cobrança, informe 0."); return; }
     if (custo.trim() !== "" && ["manutencao", "reposicao-de-peca", "retorno-de-reparo"].includes(tipo) && (!Number.isFinite(Number(custo)) || Number(custo) < 0)) { setErro("Informe um custo válido, igual ou maior que zero."); return; }
@@ -118,7 +142,7 @@ export default function NovoHistoricoPage() {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ equipamentoId, tipo, categoria, data, descricao, observacao, quemRealizou, destinoReparo, resultado, statusFinal: tipo === "retorno-de-reparo" ? statusFinal : "", custo: ["manutencao", "reposicao-de-peca", "retorno-de-reparo"].includes(tipo) && custo.trim() !== "" ? Number(custo) : 0, anexos }),
+        body: JSON.stringify({ equipamentoId: equipamentoSelecionadoId, tipo, categoria, data, descricao, observacao, quemRealizou, destinoReparo, resultado, statusFinal: tipo === "retorno-de-reparo" ? statusFinal : "", custo: ["manutencao", "reposicao-de-peca", "retorno-de-reparo"].includes(tipo) && custo.trim() !== "" ? Number(custo) : 0, anexos }),
       });
       const dados = await resposta.json().catch(() => ({}));
       if (!resposta.ok) throw new Error(dados.erro || "Não foi possível salvar o registro.");
@@ -130,21 +154,6 @@ export default function NovoHistoricoPage() {
       setSalvando(false);
     }
   }
-
-  const nomeTipo = TIPOS.find((item) => item.valor === tipo)?.nome ?? "Registro";
-  const equipamentosDisponiveis = tipo === "retorno-de-reparo"
-    ? equipamentos.filter((item) => item.status === "em-reparo" && eventosReparo.find((evento) => evento.equipamentoId === item.id)?.tipo === "envio-para-reparo")
-    : equipamentos;
-  function nomeEquipamento(item: Equipamento) {
-    const numero = item.patrimonio?.match(/(\d+)$/)?.[1];
-    const nome = item.tipo ? item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1) : "Equipamento";
-    return [numero ? `${nome} ${numero}` : (item.patrimonio || nome), item.fabricante, item.modelo, item.localizacao].filter(Boolean).join(" - ");
-  }
-
-  useEffect(() => {
-    if (carregando || equipamentosDisponiveis.some((item) => item.id === equipamentoId)) return;
-    setEquipamentoId(equipamentosDisponiveis[0]?.id || "");
-  }, [tipo, equipamentos, eventosReparo, carregando, equipamentoId]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-5 sm:p-8 dark:bg-[#3a3a3f]">
@@ -158,7 +167,7 @@ export default function NovoHistoricoPage() {
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
               <div><label className={rotulo} htmlFor="tipo">Tipo de registro</label><select id="tipo" className={campo} value={tipo} onChange={(e) => { const novoTipo = e.target.value as TipoRegistro; setTipo(novoTipo); const lista = novoTipo === "retorno-de-reparo" ? equipamentos.filter((item) => item.status === "em-reparo" && eventosReparo.find((evento) => evento.equipamentoId === item.id)?.tipo === "envio-para-reparo") : equipamentos; if (!lista.some((item) => item.id === equipamentoId)) setEquipamentoId(lista[0]?.id || ""); }}>{TIPOS.map((item) => <option key={item.valor} value={item.valor}>{item.nome}</option>)}</select></div>
               <div><label className={rotulo} htmlFor="data">Data</label><input id="data" type="date" required className={campo} value={data} onChange={(e) => setData(e.target.value)} /></div>
-              <div className="sm:col-span-2"><label className={rotulo} htmlFor="equipamento">Equipamento</label><select id="equipamento" required className={campo} value={equipamentoId} onChange={(e) => setEquipamentoId(e.target.value)} disabled={carregando || equipamentosDisponiveis.length === 0}><option value="">{carregando ? "Carregando equipamentos..." : tipo === "retorno-de-reparo" ? "Nenhum equipamento aguardando retorno" : "Selecione um equipamento"}</option>{equipamentosDisponiveis.map((item) => <option key={item.id} value={item.id}>{nomeEquipamento(item)}</option>)}</select>{!carregando && equipamentosDisponiveis.length === 0 && <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">{tipo === "retorno-de-reparo" ? "Para registrar um retorno, primeiro registre o envio do equipamento para reparo." : "Você precisa cadastrar um equipamento primeiro."}</p>}</div>
+              <div className="sm:col-span-2"><label className={rotulo} htmlFor="equipamento">Equipamento</label><select id="equipamento" required className={campo} value={equipamentoSelecionadoId} onChange={(e) => setEquipamentoId(e.target.value)} disabled={carregando || equipamentosDisponiveis.length === 0}><option value="">{carregando ? "Carregando equipamentos..." : tipo === "retorno-de-reparo" ? "Nenhum equipamento aguardando retorno" : "Selecione um equipamento"}</option>{equipamentosDisponiveis.map((item) => <option key={item.id} value={item.id}>{nomeEquipamento(item)}</option>)}</select>{!carregando && equipamentosDisponiveis.length === 0 && <p className="mt-2 text-xs text-amber-700 dark:text-amber-300">{tipo === "retorno-de-reparo" ? "Para registrar um retorno, primeiro registre o envio do equipamento para reparo." : "Você precisa cadastrar um equipamento primeiro."}</p>}</div>
               <div><label className={rotulo} htmlFor="categoria">Categoria</label><select id="categoria" className={campo} value={categoria} onChange={(e) => setCategoria(e.target.value)}>{CATEGORIAS.map((item) => <option key={item} value={item}>{item.replaceAll("-", " ").replace(/^./, (letra) => letra.toUpperCase())}</option>)}</select></div>
               <div><label className={rotulo} htmlFor="quemRealizou">Responsável / técnico</label><input id="quemRealizou" className={campo} value={quemRealizou} onChange={(e) => setQuemRealizou(e.target.value)} placeholder="Quem registrou ou realizou o serviço" /></div>
               {tipo === "envio-para-reparo" && <div className="sm:col-span-2"><label className={rotulo} htmlFor="destino">Assistência / empresa de reparo</label><input id="destino" required className={campo} value={destinoReparo} onChange={(e) => setDestinoReparo(e.target.value)} placeholder="Nome da empresa ou assistência" /></div>}

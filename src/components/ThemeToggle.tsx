@@ -7,6 +7,7 @@ export default function ThemeToggle() {
   useEffect(() => {
     const temaEscuro = localStorage.getItem("chromebook-theme") === "dark";
     document.documentElement.classList.toggle("dark", temaEscuro);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDark(temaEscuro);
     setCarregado(true);
   }, []);

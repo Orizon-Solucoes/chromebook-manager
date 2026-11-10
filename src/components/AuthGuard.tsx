@@ -28,10 +28,7 @@ export default function AuthGuard({
   useEffect(() => {
     let cancelado = false;
 
-    if (paginaPublica) {
-      setEstado("autenticado");
-      return;
-    }
+    if (paginaPublica) return;
 
     setEstado("verificando");
 
@@ -140,8 +137,9 @@ export default function AuthGuard({
     };
   }, [estado, paginaPublica, pathname, router]);
 
-  // Fecha o menu ao navegar para outra página.
+  // Fecha o menu móvel quando a rota muda; sincronização intencional da navegação.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileOpen(false);
   }, [pathname]);
 

@@ -61,6 +61,8 @@ export default function UsuariosPage() {
   }, []);
 
   useEffect(() => {
+    // carregar controla o estado visual e executa a consulta inicial dos usuários.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void carregar();
   }, [carregar]);
 

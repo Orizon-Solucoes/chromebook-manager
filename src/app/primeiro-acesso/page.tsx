@@ -11,6 +11,8 @@ export default function PrimeiroAcessoPage() {
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [carregando, setCarregando] = useState(false);
+  // Preenche o usuário a partir do link de ativação após a hidratação.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { const valor = new URLSearchParams(window.location.search).get("usuario"); if (valor) setUsuario(valor); }, []);
   async function enviar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setErro(""); setSucesso("");
