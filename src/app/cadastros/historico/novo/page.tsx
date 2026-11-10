@@ -65,6 +65,7 @@ export default function NovoHistoricoPage() {
 
     const parametros = new URLSearchParams(window.location.search);
     const tipoUrl = parametros.get("tipo");
+    const equipamentoIdUrl = parametros.get("equipamentoId");
     if (TIPOS.some((item) => item.valor === tipoUrl)) setTipo(tipoUrl as TipoRegistro);
     const hoje = new Date();
     setData(hoje.getFullYear() + "-" + String(hoje.getMonth() + 1).padStart(2, "0") + "-" + String(hoje.getDate()).padStart(2, "0"));
@@ -87,7 +88,11 @@ export default function NovoHistoricoPage() {
             .sort((a, b) => (b.criadoEm || b.data).localeCompare(a.criadoEm || a.data));
           setEquipamentos(lista);
           setEventosReparo(eventos);
-          setEquipamentoId(lista[0]?.id || "");
+          setEquipamentoId(
+            equipamentoIdUrl && lista.some((item) => item.id === equipamentoIdUrl)
+              ? equipamentoIdUrl
+              : lista[0]?.id || "",
+          );
         }
       })
       .catch((e: unknown) => { if (ativo) setErro(e instanceof Error ? e.message : "Erro ao carregar equipamentos."); })
