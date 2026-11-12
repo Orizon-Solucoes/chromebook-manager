@@ -168,8 +168,8 @@ export default function AuthGuard({
 
   if (estado === "verificando") {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-[#3a3a3f]">
-        <p className="text-sm text-gray-600 dark:text-gray-300">
+      <div className="flex min-h-screen items-center justify-center bg-[#f6f6f3] dark:bg-[#171916]">
+        <p className="text-sm font-medium text-[#70716b] dark:text-[#a9aea4]">
           Verificando sessão...
         </p>
       </div>
@@ -178,15 +178,15 @@ export default function AuthGuard({
 
   if (estado === "erro") {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-100 px-4 dark:bg-[#3a3a3f]">
-        <p className="text-sm text-gray-700 dark:text-gray-200">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#f6f6f3] px-4 dark:bg-[#171916]">
+        <p className="text-sm text-[#20211f] dark:text-[#f1f2ed]">
           Não foi possível verificar sua sessão.
         </p>
 
         <button
           type="button"
           onClick={() => router.refresh()}
-          className="rounded-lg bg-gray-900 px-4 py-2 text-sm text-white dark:bg-white dark:text-gray-900"
+          className="rounded-xl bg-[#f5cf24] px-5 py-2.5 text-sm font-bold text-[#242318] transition hover:bg-[#e6bd0d]"
         >
           Tentar novamente
         </button>
@@ -214,14 +214,14 @@ export default function AuthGuard({
 
         <main className="min-h-screen min-w-0 md:pl-60">
           {/* Barra superior exclusiva para telas menores. */}
-          <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-gray-300 bg-[#f1f1ef] px-4 dark:border-[#4a4a46] dark:bg-[#252525] md:hidden">
+          <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-[#e3e3dc] bg-white px-4 dark:border-[#3b4038] dark:bg-[#22251f] md:hidden">
             <button
               type="button"
               aria-label="Abrir menu de navegação"
               aria-controls="navegacao-principal"
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen(true)}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gray-300 text-xl dark:border-gray-600"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#e3e3dc] text-xl dark:border-[#3b4038]"
             >
               ☰
             </button>

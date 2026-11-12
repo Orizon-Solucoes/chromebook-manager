@@ -15,7 +15,7 @@ main th, main td { overflow-wrap: anywhere; }
 
 @media (max-width: 767px) {
   body { font-size: 14px; }
-  main.md\:pl-60, main.pl-60 { min-height: auto; padding-left: 0 !important; }
+  main.md\\:pl-60, main.pl-60 { min-height: auto; padding-left: 0 !important; }
   main { width: 100%; }
   main .grid, main .flex { min-width: 0; }
   main .flex > * { min-width: 0; }
@@ -26,7 +26,6 @@ main th, main td { overflow-wrap: anywhere; }
   main table { white-space: normal; }
   aside { width: min(19rem, calc(100vw - 3rem)) !important; }
 }
-
 @media (max-width: 480px) {
   main [class*="p-8"], main [class*="p-6"] { padding: 1rem; }
   main [class*="px-8"], main [class*="px-6"] { padding-inline: 1rem; }
@@ -34,12 +33,10 @@ main th, main td { overflow-wrap: anywhere; }
   main button, main a { overflow-wrap: anywhere; }
   main [class*="grid-cols-3"], main [class*="grid-cols-4"] { grid-template-columns: repeat(1, minmax(0, 1fr)); }
 }
-
 @media (min-width: 768px) and (max-width: 1100px) {
   main { min-width: 0; }
   main [class*="grid-cols-4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

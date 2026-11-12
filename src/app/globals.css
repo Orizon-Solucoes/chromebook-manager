@@ -2,71 +2,69 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* SEICE Manager — identidade institucional: grafite, areia e ouro discreto. */
+/* SEICE Manager — linguagem visual inspirada na identidade do Colégio SEICE. */
 :root {
   color-scheme: light;
-  --background: #f4f3ef;
-  --foreground: #252923;
+  --background: #f6f6f3;
+  --foreground: #20211f;
   --surface: #ffffff;
-  --surface-raised: #fbfaf7;
-  --surface-muted: #eeede7;
-  --border: #deddd5;
-  --border-strong: #c9c7bc;
-  --muted: #73766d;
-  --sidebar: #eeede7;
-  --sidebar-foreground: #30352e;
-  --brand-accent: #b58a36;
-  --brand-accent-hover: #98702a;
-  --brand-accent-soft: #f3ead7;
-  --brand-green: #526b55;
-  --brand-green-soft: #e8eee6;
-  --danger: #a3453e;
-  --danger-soft: #f7e9e6;
-  --success: #47704e;
-  --success-soft: #e7f0e6;
-  --warning: #91651f;
-  --warning-soft: #f5edda;
-  --info: #496779;
-  --info-soft: #e8eef1;
-  --radius-panel: 14px;
-  --shadow-card: 0 2px 8px rgb(37 41 35 / .045), 0 1px 2px rgb(37 41 35 / .035);
-  --shadow-float: 0 12px 32px rgb(37 41 35 / .12);
+  --surface-raised: #fffefa;
+  --surface-muted: #f0f0eb;
+  --border: #e3e3dc;
+  --border-strong: #c9c9c0;
+  --muted: #70716b;
+  --sidebar: #20211f;
+  --sidebar-foreground: #f8f8f4;
+  --brand: #f5cf24;
+  --brand-strong: #e6bd0d;
+  --brand-soft: #fff7d1;
+  --brand-ink: #262313;
+  --success: #28734a;
+  --success-soft: #e8f4eb;
+  --warning: #956515;
+  --warning-soft: #fff3d7;
+  --danger: #b43c36;
+  --danger-soft: #fcebea;
+  --info: #28617d;
+  --info-soft: #e8f2f7;
+  --radius-panel: 16px;
+  --shadow-card: 0 2px 5px rgb(28 30 24 / .035), 0 10px 28px rgb(28 30 24 / .045);
+  --shadow-float: 0 18px 50px rgb(28 30 24 / .16);
 }
 
 .dark {
   color-scheme: dark;
-  --background: #191d19;
-  --foreground: #eceee8;
-  --surface: #222821;
-  --surface-raised: #282f28;
-  --surface-muted: #30382f;
-  --border: #414a40;
-  --border-strong: #566052;
-  --muted: #a9b0a4;
-  --sidebar: #202620;
-  --sidebar-foreground: #e8ece4;
-  --brand-accent: #d2ad63;
-  --brand-accent-hover: #e0bd76;
-  --brand-accent-soft: #403725;
-  --brand-green: #a2b99e;
-  --brand-green-soft: #2c3a2d;
-  --danger: #e19a91;
-  --danger-soft: #452c29;
-  --success: #a2c49f;
-  --success-soft: #293b2b;
-  --warning: #e1bd79;
-  --warning-soft: #423723;
-  --info: #a4c2d1;
-  --info-soft: #293a43;
-  --shadow-card: 0 2px 10px rgb(0 0 0 / .16);
-  --shadow-float: 0 16px 38px rgb(0 0 0 / .3);
+  --background: #171916;
+  --foreground: #f1f2ed;
+  --surface: #22251f;
+  --surface-raised: #292d26;
+  --surface-muted: #30342d;
+  --border: #3b4038;
+  --border-strong: #51574d;
+  --muted: #a9aea4;
+  --sidebar: #11130f;
+  --sidebar-foreground: #f4f5ef;
+  --brand: #f5d43d;
+  --brand-strong: #ffdf4f;
+  --brand-soft: #39331a;
+  --brand-ink: #211e10;
+  --success: #8ac49b;
+  --success-soft: #243b2b;
+  --warning: #e5bd69;
+  --warning-soft: #40351e;
+  --danger: #ed9b95;
+  --danger-soft: #432725;
+  --info: #91c3dc;
+  --info-soft: #243943;
+  --shadow-card: 0 2px 8px rgb(0 0 0 / .18), 0 10px 28px rgb(0 0 0 / .10);
+  --shadow-float: 0 18px 50px rgb(0 0 0 / .4);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Segoe UI", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "Cascadia Code", Consolas, "Courier New", monospace;
+  --font-sans: "Inter", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "Cascadia Code", Consolas, monospace;
 }
 
 * { box-sizing: border-box; }
@@ -76,7 +74,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: "Segoe UI", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Inter", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -88,202 +86,195 @@ button, [role="button"] { cursor: pointer; }
 button:disabled { cursor: not-allowed; opacity: .58; }
 a { color: inherit; }
 h1, h2, h3, h4 { color: var(--foreground); letter-spacing: -.025em; }
-::selection { background: var(--brand-accent-soft); color: var(--foreground); }
+::selection { background: var(--brand); color: var(--brand-ink); }
 ::placeholder { color: var(--muted) !important; opacity: 1; }
 
-/* Harmoniza utilitários legados sem apagar cores semânticas de status. */
-[class*="bg-white"] { background-color: var(--surface) !important; }
-[class*="bg-gray-50"], [class*="bg-gray-100"], [class*="bg-slate-50"], [class*="bg-zinc-50"] {
-  background-color: var(--background) !important;
-}
-[class*="bg-gray-200"], [class*="bg-gray-300"], [class*="bg-slate-100"], [class*="bg-zinc-100"] {
-  background-color: var(--surface-muted) !important;
-}
-[class*="bg-[#"], [class*="dark:bg-[#"] {
+/* Fundos e superfícies legadas: convergem para os tokens sem apagar os estados. */
+main { background-color: var(--background); color: var(--foreground); }
+main [class~="bg-white"], main [class*="bg-[#"], main [class*="dark:bg-[#"] {
   background-color: var(--surface) !important;
 }
-.dark [class*="dark:bg-gray-50"], .dark [class*="dark:bg-gray-100"],
-.dark [class*="dark:bg-slate-50"], .dark [class*="dark:bg-zinc-50"] {
+main [class*="bg-gray-50"], main [class*="bg-gray-100"],
+main [class*="bg-slate-50"], main [class*="bg-zinc-50"] {
   background-color: var(--background) !important;
 }
-.dark [class*="dark:bg-gray-200"], .dark [class*="dark:bg-gray-700"],
-.dark [class*="dark:bg-gray-800"], .dark [class*="dark:bg-slate-800"] {
+main [class*="bg-gray-200"], main [class*="bg-gray-300"],
+main [class*="bg-slate-100"], main [class*="bg-zinc-100"] {
   background-color: var(--surface-muted) !important;
 }
+.dark main [class*="dark:bg-gray-50"], .dark main [class*="dark:bg-gray-100"],
+.dark main [class*="dark:bg-gray-200"], .dark main [class*="dark:bg-gray-700"],
+.dark main [class*="dark:bg-gray-800"], .dark main [class*="dark:bg-slate-800"] {
+  background-color: var(--surface-muted) !important;
+}
+.dark main [class*="dark:bg-[#"] { background-color: var(--surface) !important; }
 
-/* Cores de apoio preservam significado sem competir com a marca. */
-[class*="bg-teal-"], [class*="bg-cyan-"], [class*="bg-sky-"], [class*="bg-blue-"] {
-  background-color: var(--info-soft) !important;
-  background-image: none !important;
-}
-[class*="bg-emerald-"], [class*="bg-green-"], [class*="bg-lime-"] {
-  background-color: var(--success-soft) !important;
-  background-image: none !important;
-}
-[class*="bg-orange-"] {
-  background-color: var(--warning-soft) !important;
-  background-image: none !important;
-}
-[class*="bg-purple-"], [class*="bg-violet-"], [class*="bg-indigo-"] {
-  background-color: #f0eaf5 !important;
-  background-image: none !important;
-}
-[class*="bg-pink-"], [class*="bg-fuchsia-"] {
-  background-color: var(--danger-soft) !important;
-  background-image: none !important;
-}
-[class*="text-teal-"], [class*="text-cyan-"], [class*="text-sky-"], [class*="text-blue-"] {
-  color: var(--info) !important;
-}
-[class*="text-emerald-"], [class*="text-green-"], [class*="text-lime-"] {
-  color: var(--success) !important;
-}
-[class*="text-orange-"] { color: var(--warning) !important; }
-[class*="text-purple-"], [class*="text-violet-"], [class*="text-indigo-"] { color: #765a91 !important; }
-[class*="border-teal-"], [class*="border-cyan-"], [class*="border-sky-"], [class*="border-blue-"],
-[class*="border-emerald-"], [class*="border-green-"], [class*="border-lime-"],
-[class*="border-purple-"], [class*="border-violet-"], [class*="border-indigo-"] {
+/* Cabeçalhos das páginas e painéis. */
+main > div > header,
+main > header,
+main header.rounded-xl,
+main header.rounded-2xl {
   border-color: var(--border) !important;
 }
-/* Componentes de conteúdo: cartões, painéis, tabelas e formulários. */
+main header[class*="bg-gradient"] {
+  background: linear-gradient(112deg, #24251f 0%, #34352c 72%, #45432d 100%) !important;
+  color: #fff !important;
+  border: 1px solid rgb(245 207 36 / .35) !important;
+}
+main header[class*="bg-gradient"] h1,
+main header[class*="bg-gradient"] h2,
+main header[class*="bg-gradient"] p { color: #fff !important; }
 main article, main section.rounded-xl, main section.rounded-2xl,
-main [class*="rounded-2xl"][class*="border"], main [class*="rounded-xl"][class*="border"] {
+main [class*="rounded-xl"][class*="border"],
+main [class*="rounded-2xl"][class*="border"] {
   border-color: var(--border) !important;
 }
 main article, main section.rounded-xl, main section.rounded-2xl {
   box-shadow: var(--shadow-card);
 }
-[class*="rounded-3xl"], [class*="rounded-2xl"] { border-radius: var(--radius-panel) !important; }
-[class*="shadow-2xl"], [class*="shadow-xl"], [class*="shadow-lg"] { box-shadow: var(--shadow-card) !important; }
-.dark [class*="shadow-2xl"], .dark [class*="shadow-xl"], .dark [class*="shadow-lg"] {
-  box-shadow: var(--shadow-card) !important;
-}
-main [class*="bg-white"], main [class*="dark:bg-[#"] {
-  color: var(--foreground);
-}
-main [class*="text-gray-900"], main [class*="text-slate-950"] { color: var(--foreground) !important; }
+main [class*="rounded-3xl"], main [class*="rounded-2xl"] { border-radius: var(--radius-panel) !important; }
+main [class*="shadow-2xl"], main [class*="shadow-xl"], main [class*="shadow-lg"],
+main [class*="shadow-md"] { box-shadow: var(--shadow-card) !important; }
+main [class*="text-gray-950"], main [class*="text-gray-900"],
+main [class*="text-slate-950"], main [class*="text-slate-900"],
 main [class*="text-gray-800"], main [class*="text-gray-700"],
-main [class*="text-slate-800"], main [class*="text-slate-700"] { color: var(--foreground) !important; }
+main [class*="text-slate-800"], main [class*="text-slate-700"] {
+  color: var(--foreground) !important;
+}
 main [class*="text-gray-600"], main [class*="text-gray-500"],
-main [class*="text-slate-600"], main [class*="text-slate-500"] { color: var(--muted) !important; }
+main [class*="text-slate-600"], main [class*="text-slate-500"] {
+  color: var(--muted) !important;
+}
 .dark main [class*="dark:text-gray-100"], .dark main [class*="dark:text-white"],
 .dark main [class*="dark:text-gray-200"] { color: var(--foreground) !important; }
 .dark main [class*="dark:text-gray-400"], .dark main [class*="dark:text-gray-300"] { color: var(--muted) !important; }
 
-input, select, textarea {
-  min-height: 40px;
-  background: var(--surface) !important;
+/* Amarelo SEICE: destaque pontual, não uma camada de amarelo em tudo. */
+main button[class*="bg-amber-"], main button[class*="bg-yellow-"],
+main a[class*="bg-amber-"], main a[class*="bg-yellow-"],
+main button[class*="bg-gradient"], main a[class*="bg-gradient"] {
+  background: var(--brand) !important;
+  color: var(--brand-ink) !important;
+  border-color: var(--brand-strong) !important;
+  box-shadow: 0 2px 4px rgb(42 36 10 / .10) !important;
+}
+main button[class*="bg-amber-"]:hover, main button[class*="bg-yellow-"]:hover,
+main a[class*="bg-amber-"]:hover, main a[class*="bg-yellow-"]:hover {
+  background: var(--brand-strong) !important;
+}
+main button[class*="bg-gray-900"], main a[class*="bg-gray-900"],
+main button[class*="bg-black"], main a[class*="bg-black"] {
+  background: #252620 !important;
+  color: #fff !important;
+  border-color: #252620 !important;
+}
+.dark main button[class*="bg-white"], .dark main a[class*="bg-white"] {
+  background: var(--brand) !important;
+  color: var(--brand-ink) !important;
+  border-color: var(--brand) !important;
+}
+
+/* Cores semânticas mantêm o significado em gráficos, status e avisos. */
+main [class*="bg-emerald-"], main [class*="bg-green-"], main [class*="bg-lime-"] {
+  background-color: var(--success-soft) !important;
+  background-image: none !important;
+}
+main [class*="text-emerald-"], main [class*="text-green-"], main [class*="text-lime-"] { color: var(--success) !important; }
+main [class*="bg-orange-"], main [class*="bg-amber-"]:not(button):not(a),
+main [class*="bg-yellow-"]:not(button):not(a) { background-color: var(--warning-soft) !important; }
+main [class*="text-orange-"], main [class*="text-amber-"], main [class*="text-yellow-"] { color: var(--warning) !important; }
+main [class*="bg-rose-"], main [class*="bg-red-"] { background-color: var(--danger-soft) !important; }
+main [class*="text-rose-"], main [class*="text-red-"] { color: var(--danger) !important; }
+main [class*="bg-sky-"], main [class*="bg-blue-"], main [class*="bg-teal-"], main [class*="bg-cyan-"] {
+  background-color: var(--info-soft) !important;
+  background-image: none !important;
+}
+main [class*="text-sky-"], main [class*="text-blue-"], main [class*="text-teal-"], main [class*="text-cyan-"] { color: var(--info) !important; }
+main [class*="bg-violet-"], main [class*="bg-purple-"], main [class*="bg-indigo-"] {
+  background-color: #f0ebf5 !important;
+  background-image: none !important;
+}
+main [class*="text-violet-"], main [class*="text-purple-"], main [class*="text-indigo-"] { color: #71518c !important; }
+.dark main [class*="bg-violet-"], .dark main [class*="bg-purple-"], .dark main [class*="bg-indigo-"] { background-color: #382d43 !important; }
+.dark main [class*="text-violet-"], .dark main [class*="text-purple-"], .dark main [class*="text-indigo-"] { color: #d2b7e8 !important; }
+
+/* Campos de formulário consistentes e acessíveis. */
+main input, main select, main textarea {
+  min-height: 42px;
+  max-width: 100%;
+  background-color: var(--surface) !important;
   color: var(--foreground) !important;
   border: 1px solid var(--border-strong) !important;
-  border-radius: 9px;
+  border-radius: 10px;
   transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
 }
-textarea { min-height: 96px; }
-input:hover, select:hover, textarea:hover { border-color: var(--border-strong) !important; }
-input:focus, select:focus, textarea:focus {
+main textarea { min-height: 100px; }
+main input:hover, main select:hover, main textarea:hover { border-color: #aaa99d !important; }
+main input:focus, main select:focus, main textarea:focus {
   outline: 0 !important;
-  border-color: var(--brand-accent) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent) 18%, transparent);
+  border-color: #d2ad08 !important;
+  box-shadow: 0 0 0 3px rgb(245 207 36 / .22) !important;
 }
-button, a[class*="rounded"][class*="px-"] {
-  border-radius: 9px;
+main button, main a[class*="rounded"][class*="px-"] {
+  border-radius: 10px;
   transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 2px solid var(--brand-accent) !important;
+main button:focus-visible, main a:focus-visible,
+main input:focus-visible, main select:focus-visible, main textarea:focus-visible {
+  outline: 2px solid #d2ad08 !important;
   outline-offset: 2px;
 }
-button:disabled { transform: none !important; box-shadow: none !important; }
+main button:disabled { transform: none !important; box-shadow: none !important; }
 
-/* Ações primárias mantêm contraste, independentemente da classe utilitária antiga. */
-button[class*="bg-teal-"], button[class*="bg-cyan-"], button[class*="bg-sky-"], button[class*="bg-blue-"],
-button[class*="bg-emerald-"], button[class*="bg-green-"], button[class*="bg-indigo-"], button[class*="bg-violet-"],
-a[class*="bg-teal-"], a[class*="bg-cyan-"], a[class*="bg-sky-"], a[class*="bg-blue-"],
-a[class*="bg-emerald-"], a[class*="bg-green-"], a[class*="bg-indigo-"], a[class*="bg-violet-"] {
-  background: var(--brand-accent) !important;
-  color: #211d15 !important;
-  border-color: var(--brand-accent) !important;
-}
-button[class*="bg-teal-"]:hover, button[class*="bg-cyan-"]:hover, button[class*="bg-blue-"]:hover,
-button[class*="bg-emerald-"]:hover, button[class*="bg-green-"]:hover,
-a[class*="bg-teal-"]:hover, a[class*="bg-cyan-"]:hover, a[class*="bg-blue-"]:hover,
-a[class*="bg-emerald-"]:hover, a[class*="bg-green-"]:hover {
-  background: var(--brand-accent-hover) !important;
-}
-/* Ações primárias: dourado discreto, com contraste legível. */
-button[class*="bg-amber-"], button[class*="bg-yellow-"],
-a[class*="bg-amber-"], a[class*="bg-yellow-"],
-button[class*="bg-gradient"], a[class*="bg-gradient"] {
-  background: var(--brand-accent) !important;
-  color: #211d15 !important;
-  border-color: var(--brand-accent) !important;
-  box-shadow: 0 1px 2px rgb(0 0 0 / .08) !important;
-}
-button[class*="bg-amber-"]:hover, button[class*="bg-yellow-"]:hover,
-a[class*="bg-amber-"]:hover, a[class*="bg-yellow-"]:hover {
-  background: var(--brand-accent-hover) !important;
-  border-color: var(--brand-accent-hover) !important;
-}
-[class*="bg-amber-"], [class*="bg-yellow-"] {
-  background-color: var(--brand-accent-soft) !important;
-  color: var(--foreground) !important;
-}
-[class*="text-amber-"], [class*="text-yellow-"] { color: var(--brand-accent-hover) !important; }
-.dark [class*="text-amber-"], .dark [class*="text-yellow-"] { color: var(--brand-accent) !important; }
-[class*="border-amber-"], [class*="border-yellow-"] { border-color: color-mix(in srgb, var(--brand-accent) 55%, var(--border)) !important; }
-
-/* Tabelas com leitura mais confortável e hierarquia discreta. */
-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-thead { background: var(--surface-muted) !important; color: var(--muted) !important; }
-th {
+/* Tabelas com hierarquia e leitura confortável. */
+main table { width: 100%; border-collapse: separate; border-spacing: 0; }
+main thead { background: var(--surface-muted) !important; color: var(--muted) !important; }
+main th {
   font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .08em;
+  font-weight: 750;
+  letter-spacing: .075em;
   text-transform: uppercase;
 }
-th, td { border-color: var(--border) !important; }
-tr { border-color: var(--border) !important; }
-tbody tr { transition: background-color 140ms ease; }
-tbody tr:hover { background-color: var(--surface-raised); }
-hr { border-color: var(--border); }
+main th, main td, main tr { border-color: var(--border) !important; }
+main tbody tr { transition: background-color 140ms ease; }
+main tbody tr:hover { background-color: var(--surface-raised); }
+main hr { border-color: var(--border); }
 
-/* Navegação lateral com contraste próprio e estados fáceis de reconhecer. */
+/* Menu institucional escuro, com amarelo apenas na seleção e nas ações. */
 aside {
   background: var(--sidebar) !important;
   color: var(--sidebar-foreground) !important;
-  border-color: var(--border) !important;
-  box-shadow: 2px 0 18px rgb(25 29 25 / .035);
+  border-color: #373932 !important;
+  box-shadow: 5px 0 24px rgb(0 0 0 / .08);
 }
 aside > div:first-child {
   background: var(--sidebar) !important;
-  border-color: var(--border) !important;
+  border-color: #373932 !important;
 }
-aside nav { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
-aside nav section > p { color: var(--muted) !important; }
-aside a { border-radius: 9px !important; }
+aside nav { scrollbar-width: thin; scrollbar-color: #55584e transparent; }
+aside nav section > p { color: #a6a99e !important; }
+aside a { border-radius: 10px !important; }
 aside a[aria-current="page"] {
-  background: var(--brand-accent-soft) !important;
-  color: var(--foreground) !important;
-  border-color: color-mix(in srgb, var(--brand-accent) 45%, var(--border)) !important;
-  box-shadow: inset 3px 0 0 var(--brand-accent) !important;
+  background: var(--brand) !important;
+  color: #242318 !important;
+  border-color: var(--brand) !important;
+  box-shadow: none !important;
 }
-aside a[aria-current="page"] span { color: var(--foreground) !important; }
+aside a[aria-current="page"] span { color: #242318 !important; }
 aside a:hover, aside button:hover {
-  background-color: color-mix(in srgb, var(--brand-accent-soft) 55%, var(--surface)) !important;
-  color: var(--foreground) !important;
+  background-color: #34372f !important;
+  color: #fff !important;
 }
-aside [class*="bg-gray-300"], aside [class*="bg-gray-400"] {
-  background-color: var(--surface-muted) !important;
-}
-aside [class*="text-red-"], aside [class*="text-rose-"] { color: var(--danger) !important; }
+aside a[aria-current="page"]:hover { background: var(--brand-strong) !important; color: #242318 !important; }
+aside [class*="bg-gray-300"], aside [class*="bg-gray-400"] { background-color: #3a3d35 !important; }
+aside [class*="text-gray-900"], aside [class*="text-gray-800"], aside [class*="text-gray-700"] { color: #f4f5ef !important; }
+aside [class*="text-gray-500"], aside [class*="text-gray-600"] { color: #a6a99e !important; }
+aside select { background: #2b2e27 !important; color: #f5f5ef !important; border-color: #4b4e44 !important; }
+aside button { color: #f4f5ef; }
 
-/* Feedbacks e estados semânticos. */
-[role="alert"], [class*="bg-rose-50"], [class*="bg-red-50"] {
+/* Estados, mensagens e etiquetas. */
+[role="alert"] {
   border-color: color-mix(in srgb, var(--danger) 35%, var(--border)) !important;
-  background-color: var(--danger-soft) !important;
-  color: var(--danger) !important;
-}
-.dark [role="alert"], .dark [class*="dark:bg-rose-950"], .dark [class*="dark:bg-red-950"] {
   background-color: var(--danger-soft) !important;
   color: var(--danger) !important;
 }
@@ -296,21 +287,41 @@ aside [class*="text-red-"], aside [class*="text-rose-"] { color: var(--danger) !
 }
 .status-badge--disponivel { background: var(--success-soft) !important; border-color: var(--success) !important; color: var(--success) !important; }
 .status-badge--em-uso { background: var(--info-soft) !important; border-color: var(--info) !important; color: var(--info) !important; }
-.status-badge--reserva { background: #f0eaf5 !important; border-color: #8869a5 !important; color: #684b83 !important; }
+.status-badge--reserva { background: #f0ebf5 !important; border-color: #8869a5 !important; color: #684b83 !important; }
 .status-badge--em-reparo { background: var(--warning-soft) !important; border-color: var(--warning) !important; color: var(--warning) !important; }
 .status-badge--para-descarte { background: var(--surface-muted) !important; border-color: var(--border-strong) !important; color: var(--muted) !important; }
 .dark .status-badge--reserva { background: #3b3047 !important; border-color: #b59acb !important; color: #dfc9ef !important; }
 
-/* Cabeçalhos internos mais consistentes sem interferir nos formulários. */
-main > div > header { border-color: var(--border) !important; }
-main a:hover { text-decoration-color: var(--brand-accent); }
+
+/* A tela de autenticação tem composição própria, fora do shell administrativo. */
+.seice-login {
+  background: radial-gradient(ellipse at 50% 0%, #fff4b8 0%, #f6f6f3 46%, #eeefe9 100%) !important;
+}
+.dark .seice-login {
+  background: radial-gradient(ellipse at 50% 0%, #37311b 0%, #171916 55%, #12140f 100%) !important;
+}
+.seice-login > div:first-child { background: #f5cf24 !important; }
+.seice-login header { background: #22231f !important; }
+.seice-login [class*="bg-[#f5cf24]"] { background: #f5cf24 !important; }
+.seice-login h1, .seice-login h2, .seice-login header p { color: inherit; }
+.seice-login header h1 { color: #fff !important; }
+.seice-login header p { color: rgb(255 255 255 / .65) !important; }
+.seice-login header p[class*="text-[#f5cf24]"] { color: #f5cf24 !important; }
+.seice-login form { background: #fff !important; }
+.seice-login input {
+  background: #fafaf7 !important;
+  color: #252620 !important;
+  border-color: #deded6 !important;
+}
+.seice-login form h2 { color: #252620 !important; }
+.seice-login form p, .seice-login form label span { color: #62635c; }
+.dark .seice-login form { background: #fff !important; color: #252620 !important; }
 
 @media (max-width: 760px) {
   body { font-size: 14px; }
-  main [class*="text-4xl"] { font-size: 1.875rem; line-height: 1.2; }
-  main [class*="text-3xl"] { font-size: 1.625rem; line-height: 1.25; }
+  main [class*="text-4xl"] { font-size: 1.9rem; line-height: 1.2; }
+  main [class*="text-3xl"] { font-size: 1.6rem; line-height: 1.25; }
 }
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
