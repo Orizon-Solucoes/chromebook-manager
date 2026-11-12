@@ -331,3 +331,371 @@ aside button { color: #f4f5ef; }
     animation-iteration-count: 1 !important;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   SEICE MANAGER · camada de acabamento visual transversal
+   Aplica a mesma linguagem visual em todas as rotas sem alterar seus fluxos.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --seice-ink: #252620;
+  --seice-yellow: #f4cf2b;
+  --seice-yellow-hover: #e8bf12;
+  --seice-paper: #f7f7f3;
+  --seice-line: #e5e5dd;
+  --seice-muted: #74756d;
+  --seice-radius: 16px;
+}
+
+.dark {
+  --seice-ink: #f2f3ed;
+  --seice-paper: #171916;
+  --seice-line: #3b4038;
+  --seice-muted: #a9aea4;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  letter-spacing: -0.006em;
+}
+
+main {
+  min-height: 100vh;
+  background: var(--background);
+}
+
+main > div {
+  min-width: 0;
+}
+
+main h1 {
+  font-size: clamp(1.65rem, 2.5vw, 2.15rem);
+  font-weight: 760;
+  letter-spacing: -0.045em;
+  line-height: 1.12;
+}
+
+main h2 {
+  font-weight: 720;
+  letter-spacing: -0.035em;
+}
+
+main h3 {
+  font-weight: 680;
+  letter-spacing: -0.025em;
+}
+
+/* Cabeçalhos de página: aparência institucional, sem gradientes chamativos. */
+main > div > header,
+main > header,
+main header.rounded-xl,
+main header.rounded-2xl {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border) !important;
+  border-radius: 20px !important;
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+
+main header[class*="bg-gradient"] {
+  background: linear-gradient(118deg, #252620 0%, #303129 78%, #3b3928 100%) !important;
+  border-color: rgb(244 207 43 / 38%) !important;
+  box-shadow: 0 14px 34px rgb(28 30 24 / 12%) !important;
+}
+
+main header[class*="bg-gradient"] h1,
+main header[class*="bg-gradient"] h2,
+main header[class*="bg-gradient"] h3,
+main header[class*="bg-gradient"] p,
+main header[class*="bg-gradient"] span {
+  color: #fff !important;
+}
+
+main header[class*="bg-gradient"] button,
+main header[class*="bg-gradient"] a[class*="bg-white"] {
+  background: var(--seice-yellow) !important;
+  color: #252318 !important;
+  border-color: var(--seice-yellow) !important;
+}
+
+/* Superfícies e cartões usados nos módulos. */
+main article,
+main section.rounded-xl,
+main section.rounded-2xl,
+main [class*="rounded-xl"][class*="border"],
+main [class*="rounded-2xl"][class*="border"] {
+  border-color: var(--border) !important;
+}
+
+main article,
+main section.rounded-xl,
+main section.rounded-2xl {
+  border-radius: var(--seice-radius) !important;
+  box-shadow: var(--shadow-card);
+}
+
+main article:hover {
+  border-color: var(--border-strong) !important;
+}
+
+main [class*="shadow-2xl"],
+main [class*="shadow-xl"],
+main [class*="shadow-lg"] {
+  box-shadow: var(--shadow-card) !important;
+}
+
+/* Acentos antigos convergem para a paleta SEICE, preservando estados semânticos. */
+main [class*="text-teal-"],
+main [class*="text-cyan-"] {
+  color: #8b7417 !important;
+}
+
+.dark main [class*="text-teal-"],
+.dark main [class*="text-cyan-"] {
+  color: #f0d66b !important;
+}
+
+main [class*="border-teal-"],
+main [class*="border-cyan-"] {
+  border-color: var(--border) !important;
+}
+
+main [class*="bg-teal-"]:not(button):not(a),
+main [class*="bg-cyan-"]:not(button):not(a) {
+  background-color: var(--brand-soft) !important;
+  background-image: none !important;
+}
+
+.dark main [class*="bg-teal-"]:not(button):not(a),
+.dark main [class*="bg-cyan-"]:not(button):not(a) {
+  background-color: var(--brand-soft) !important;
+}
+
+main [class*="from-teal-"],
+main [class*="via-teal-"],
+main [class*="to-teal-"],
+main [class*="from-cyan-"],
+main [class*="via-cyan-"],
+main [class*="to-cyan-"] {
+  --tw-gradient-from: #d9b91e var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(217 185 30 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #f4cf2b, #d9b91e !important;
+}
+
+/* Botões principais e ações. */
+main button[class*="bg-teal-"],
+main button[class*="bg-cyan-"],
+main button[class*="bg-sky-"],
+main button[class*="bg-blue-"],
+main button[class*="bg-emerald-"],
+main button[class*="bg-green-"],
+main a[class*="bg-teal-"],
+main a[class*="bg-cyan-"],
+main a[class*="bg-sky-"],
+main a[class*="bg-blue-"],
+main a[class*="bg-emerald-"],
+main a[class*="bg-green-"] {
+  background: var(--seice-yellow) !important;
+  color: #252318 !important;
+  border-color: var(--seice-yellow-hover) !important;
+  box-shadow: 0 2px 5px rgb(58 48 8 / 12%) !important;
+}
+
+main button[class*="bg-teal-"]:hover,
+main button[class*="bg-cyan-"]:hover,
+main button[class*="bg-sky-"]:hover,
+main button[class*="bg-blue-"]:hover,
+main button[class*="bg-emerald-"]:hover,
+main button[class*="bg-green-"]:hover,
+main a[class*="bg-teal-"]:hover,
+main a[class*="bg-cyan-"]:hover,
+main a[class*="bg-sky-"]:hover,
+main a[class*="bg-blue-"]:hover,
+main a[class*="bg-emerald-"]:hover,
+main a[class*="bg-green-"]:hover {
+  background: var(--seice-yellow-hover) !important;
+  color: #252318 !important;
+}
+
+main button,
+main a[class*="rounded"][class*="px-"] {
+  min-height: 38px;
+  border-radius: 10px;
+  font-weight: 650;
+  transition: background-color 150ms ease, border-color 150ms ease,
+    box-shadow 150ms ease, transform 150ms ease;
+}
+
+main button:active,
+main a[class*="rounded"][class*="px-"]:active {
+  transform: translateY(1px);
+}
+
+main button:disabled {
+  transform: none;
+  box-shadow: none !important;
+}
+
+/* Formulários: campos uniformes, confortáveis e com foco visível. */
+main input:not([type="checkbox"]):not([type="radio"]),
+main select,
+main textarea {
+  min-height: 43px;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 10px !important;
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  box-shadow: none !important;
+}
+
+main textarea {
+  min-height: 104px;
+  line-height: 1.55;
+}
+
+main input:focus,
+main select:focus,
+main textarea:focus {
+  border-color: #c6a51a !important;
+  box-shadow: 0 0 0 3px rgb(244 207 43 / 22%) !important;
+  outline: none !important;
+}
+
+main input::placeholder,
+main textarea::placeholder {
+  color: var(--muted) !important;
+  opacity: .9;
+}
+
+main label {
+  font-weight: 620;
+}
+
+/* Tabelas com cabeçalho discreto e leitura mais clara. */
+main table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--foreground);
+}
+
+main thead {
+  background: var(--surface-muted) !important;
+}
+
+main th {
+  color: var(--muted) !important;
+  font-size: 11px;
+  font-weight: 750 !important;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+main td,
+main th {
+  border-color: var(--border) !important;
+}
+
+main tbody tr {
+  transition: background-color 120ms ease;
+}
+
+main tbody tr:hover {
+  background: color-mix(in srgb, var(--brand-soft) 42%, transparent) !important;
+}
+
+/* Mensagens, indicadores e status conservam seus significados. */
+main [role="alert"] {
+  border-radius: 12px;
+}
+
+main .status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 25px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .01em;
+}
+
+main .status-badge--disponivel {
+  background: var(--success-soft) !important;
+  color: var(--success) !important;
+}
+
+main .status-badge--em-uso {
+  background: var(--info-soft) !important;
+  color: var(--info) !important;
+}
+
+main .status-badge--reserva {
+  background: var(--brand-soft) !important;
+  color: var(--warning) !important;
+}
+
+main .status-badge--em-reparo,
+main .status-badge--para-descarte {
+  background: var(--danger-soft) !important;
+  color: var(--danger) !important;
+}
+
+/* Barras de rolagem discretas. */
+* {
+  scrollbar-color: var(--border-strong) transparent;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--border-strong);
+  background-clip: padding-box;
+}
+
+/* Movimento reduzido para quem prefere menos animações. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (max-width: 767px) {
+  main > div {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  main > div > header,
+  main > header,
+  main header.rounded-xl,
+  main header.rounded-2xl {
+    border-radius: 15px !important;
+  }
+
+  main article,
+  main section.rounded-xl,
+  main section.rounded-2xl {
+    border-radius: 13px !important;
+  }
+
+  main table {
+    min-width: 640px;
+  }
+}
