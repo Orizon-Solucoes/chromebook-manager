@@ -421,7 +421,7 @@ export default function EquipamentosLista({
                       <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                         {NOMES[item.tipo]}
                       </p>
-                      <h2 className="mt-1 break-words font-bold text-gray-900 dark:text-white">
+                      <h2 className="equipment-identity break-words">
                         {item.tipo === "access-point"
                           ? `Access Point${item.detalhes?.bloco ? ` — ${String(item.detalhes.bloco)}` : ""}`
                           : item.tipo === "chromebook"

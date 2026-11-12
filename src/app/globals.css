@@ -1227,3 +1227,188 @@ main th, main td, main tr { border-color: var(--border) !important; }
   color: var(--muted) !important;
 }
 .seice-login a { color: var(--foreground) !important; }
+
+
+/* --------------------------------------------------------------------------
+   REFINAMENTO GLOBAL · navegação e inventário SEICE
+   -------------------------------------------------------------------------- */
+:root {
+  --sidebar: #f7f7f5;
+  --sidebar-foreground: #292929;
+}
+.dark {
+  --sidebar: #1e1e1e;
+  --sidebar-foreground: #eeeeee;
+}
+
+/* Sidebar: superfície neutra, navegação clara e amarelo somente como acento. */
+aside#navegacao-principal {
+  background: var(--sidebar) !important;
+  color: var(--sidebar-foreground) !important;
+  border-right: 1px solid var(--border) !important;
+  box-shadow: 3px 0 18px rgb(0 0 0 / .035) !important;
+}
+aside#navegacao-principal > div:first-child {
+  background: var(--sidebar) !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 22px 20px 18px !important;
+}
+aside#navegacao-principal > div:first-child h1 {
+  color: var(--foreground) !important;
+  font-size: 15px !important;
+  font-weight: 750 !important;
+  letter-spacing: -.025em !important;
+}
+aside#navegacao-principal > div:first-child p {
+  color: var(--muted) !important;
+  letter-spacing: .11em !important;
+}
+aside#navegacao-principal > div:first-child > div > span {
+  background: #e5c64f !important;
+  color: #292929 !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+aside#navegacao-principal > div:first-child > div:last-child {
+  height: 3px !important;
+  width: 30px !important;
+  background: #d8b52b !important;
+}
+aside#navegacao-principal > div:nth-child(2) {
+  background: transparent !important;
+  border-color: var(--border) !important;
+}
+aside#navegacao-principal label,
+aside#navegacao-principal nav section > p {
+  color: var(--muted) !important;
+}
+aside#navegacao-principal select {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 8px !important;
+}
+aside#navegacao-principal nav {
+  padding: 18px 12px !important;
+}
+aside#navegacao-principal nav section {
+  margin-bottom: 21px !important;
+}
+aside#navegacao-principal nav section > p {
+  padding-left: 11px !important;
+  margin-bottom: 8px !important;
+  font-size: 10px !important;
+  font-weight: 750 !important;
+  letter-spacing: .12em !important;
+}
+aside#navegacao-principal nav a {
+  position: relative !important;
+  min-height: 39px !important;
+  gap: 10px !important;
+  padding: 5px 9px !important;
+  border: 1px solid transparent !important;
+  border-radius: 8px !important;
+  color: var(--muted) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+}
+aside#navegacao-principal nav a > span:first-child {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 7px !important;
+  background: transparent !important;
+  color: var(--muted) !important;
+  font-size: 15px !important;
+}
+aside#navegacao-principal nav a:hover {
+  background: var(--surface-muted) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+}
+aside#navegacao-principal nav a[aria-current="page"] {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 1px 2px rgb(0 0 0 / .045) !important;
+}
+aside#navegacao-principal nav a[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: #d8b52b;
+}
+aside#navegacao-principal nav a[aria-current="page"] > span:first-child {
+  background: #fbf4d9 !important;
+  color: #66551a !important;
+}
+.dark aside#navegacao-principal nav a[aria-current="page"] > span:first-child {
+  background: #3b351f !important;
+  color: #e5c64f !important;
+}
+aside#navegacao-principal nav a[aria-current="page"] > span:last-child {
+  background: #d8b52b !important;
+}
+aside#navegacao-principal > div:last-child {
+  background: var(--sidebar) !important;
+  border-top: 1px solid var(--border) !important;
+  padding: 12px !important;
+}
+aside#navegacao-principal > div:last-child > div:first-child {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 9px !important;
+}
+aside#navegacao-principal > div:last-child > div:first-child > div:first-child {
+  background: #eee7cd !important;
+  color: #51451c !important;
+}
+.dark aside#navegacao-principal > div:last-child > div:first-child > div:first-child {
+  background: #3b351f !important;
+  color: #e5c64f !important;
+}
+aside#navegacao-principal > div:last-child p:first-child {
+  color: var(--foreground) !important;
+}
+aside#navegacao-principal > div:last-child p:nth-child(2) {
+  color: var(--muted) !important;
+}
+aside#navegacao-principal > div:last-child button {
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  color: var(--muted) !important;
+  background: var(--surface) !important;
+}
+aside#navegacao-principal > div:last-child button:hover {
+  border-color: #c9aa3c !important;
+  color: var(--foreground) !important;
+  background: var(--surface-muted) !important;
+}
+
+/* Identificação dos equipamentos: etiqueta patrimonial legível e padronizada. */
+.equipment-identity {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 5px !important;
+  padding: 5px 9px;
+  border: 1px solid #e7dfc2;
+  border-radius: 6px;
+  background: #faf7eb;
+  color: #292929 !important;
+  font-size: 13px;
+  font-weight: 750 !important;
+  line-height: 1.35;
+  letter-spacing: -.01em;
+}
+.dark .equipment-identity {
+  border-color: #5a502e;
+  background: #35301f;
+  color: #f0e3ae !important;
+}
