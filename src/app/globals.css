@@ -996,3 +996,234 @@ main [class*="text-sky-"], main [class*="text-blue-"], main [class*="text-teal-"
   main article, main section.rounded-xl, main section.rounded-2xl { border-radius: 10px !important; }
 }
 
+
+
+/* --------------------------------------------------------------------------
+   SEICE MANAGER · teste da identidade SEICE em padrão escritório
+   Amarelo usado como detalhe de interação, nunca como fundo dominante.
+   Sidebar preservada e independente desta paleta.
+   -------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #252525;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-muted: #f5f5f4;
+  --border: #e5e5e5;
+  --border-strong: #d1d1d1;
+  --muted: #737373;
+  --brand: #d8b52b;
+  --brand-strong: #b99616;
+  --brand-soft: #fff9e6;
+  --brand-ink: #252525;
+  --info: #525252;
+  --info-soft: #f1f1f1;
+  --shadow-card: 0 1px 3px rgb(0 0 0 / .055);
+  --shadow-float: 0 12px 32px rgb(0 0 0 / .12);
+  --seice-ink: #252525;
+  --seice-paper: #ffffff;
+  --seice-line: #e5e5e5;
+  --seice-muted: #737373;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #242424;
+  --foreground: #f2f2f2;
+  --surface: #2d2d2d;
+  --surface-raised: #333333;
+  --surface-muted: #303030;
+  --border: #414141;
+  --border-strong: #555555;
+  --muted: #aaaaaa;
+  --brand: #d8b52b;
+  --brand-strong: #e5c64f;
+  --brand-soft: #3b351f;
+  --brand-ink: #171717;
+  --info: #b8b8b8;
+  --info-soft: #383838;
+  --shadow-card: 0 1px 3px rgb(0 0 0 / .22);
+  --shadow-float: 0 14px 36px rgb(0 0 0 / .35);
+  --seice-ink: #f2f2f2;
+  --seice-paper: #242424;
+  --seice-line: #414141;
+  --seice-muted: #aaaaaa;
+}
+
+/* Fundo geral e superfícies: branco no claro, cinza-escuro no escuro. */
+html, body, main {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+main [class~="bg-white"],
+main [class*="bg-[#"],
+main [class*="dark:bg-[#"] {
+  background-color: var(--surface) !important;
+}
+main [class*="bg-gray-50"], main [class*="bg-gray-100"],
+main [class*="bg-slate-50"], main [class*="bg-zinc-50"] {
+  background-color: var(--background) !important;
+}
+main [class*="bg-gray-200"], main [class*="bg-gray-300"],
+main [class*="bg-slate-100"], main [class*="bg-zinc-100"] {
+  background-color: var(--surface-muted) !important;
+}
+.dark main [class*="dark:bg-gray-50"], .dark main [class*="dark:bg-gray-100"],
+.dark main [class*="dark:bg-gray-200"], .dark main [class*="dark:bg-gray-700"],
+.dark main [class*="dark:bg-gray-800"], .dark main [class*="dark:bg-slate-800"] {
+  background-color: var(--surface-muted) !important;
+}
+.dark main [class*="dark:bg-[#"] { background-color: var(--surface) !important; }
+
+main article, main section.rounded-xl, main section.rounded-2xl,
+main [class*="rounded-xl"][class*="border"],
+main [class*="rounded-2xl"][class*="border"] {
+  border-color: var(--border) !important;
+}
+main article, main section.rounded-xl, main section.rounded-2xl {
+  background-color: var(--surface);
+  box-shadow: var(--shadow-card) !important;
+}
+main > div > header, main > header, main header.rounded-xl, main header.rounded-2xl {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-card) !important;
+}
+main header[class*="bg-gradient"] {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+}
+main header[class*="bg-gradient"] h1,
+main header[class*="bg-gradient"] h2,
+main header[class*="bg-gradient"] h3,
+main header[class*="bg-gradient"] p,
+main header[class*="bg-gradient"] span {
+  color: var(--foreground) !important;
+}
+
+/* Ações principais em grafite; amarelo aparece só no contorno e interação. */
+main button[class*="bg-amber-"], main button[class*="bg-yellow-"],
+main button[class*="bg-teal-"], main button[class*="bg-cyan-"],
+main button[class*="bg-sky-"], main button[class*="bg-blue-"],
+main button[class*="bg-emerald-"], main button[class*="bg-green-"],
+main a[class*="bg-amber-"], main a[class*="bg-yellow-"],
+main a[class*="bg-teal-"], main a[class*="bg-cyan-"],
+main a[class*="bg-sky-"], main a[class*="bg-blue-"],
+main a[class*="bg-emerald-"], main a[class*="bg-green-"],
+main button[class*="bg-gradient"], main a[class*="bg-gradient"] {
+  background: #303030 !important;
+  color: #ffffff !important;
+  border-color: var(--brand) !important;
+  box-shadow: none !important;
+}
+.dark main button[class*="bg-amber-"], .dark main button[class*="bg-yellow-"],
+.dark main button[class*="bg-teal-"], .dark main button[class*="bg-cyan-"],
+.dark main button[class*="bg-sky-"], .dark main button[class*="bg-blue-"],
+.dark main button[class*="bg-emerald-"], .dark main button[class*="bg-green-"],
+.dark main a[class*="bg-amber-"], .dark main a[class*="bg-yellow-"],
+.dark main a[class*="bg-teal-"], .dark main a[class*="bg-cyan-"],
+.dark main a[class*="bg-sky-"], .dark main a[class*="bg-blue-"],
+.dark main a[class*="bg-emerald-"], .dark main a[class*="bg-green-"],
+.dark main button[class*="bg-gradient"], .dark main a[class*="bg-gradient"] {
+  background: #3a3a3a !important;
+  color: #ffffff !important;
+  border-color: #a98d2c !important;
+}
+main button[class*="bg-amber-"]:hover, main button[class*="bg-yellow-"]:hover,
+main button[class*="bg-teal-"]:hover, main button[class*="bg-cyan-"]:hover,
+main button[class*="bg-sky-"]:hover, main button[class*="bg-blue-"]:hover,
+main button[class*="bg-emerald-"]:hover, main button[class*="bg-green-"]:hover,
+main a[class*="bg-amber-"]:hover, main a[class*="bg-yellow-"]:hover,
+main a[class*="bg-teal-"]:hover, main a[class*="bg-cyan-"]:hover,
+main a[class*="bg-sky-"]:hover, main a[class*="bg-blue-"]:hover,
+main a[class*="bg-emerald-"]:hover, main a[class*="bg-green-"]:hover {
+  background: #454545 !important;
+  border-color: var(--brand-strong) !important;
+}
+main button[class*="bg-gray-900"], main a[class*="bg-gray-900"],
+main button[class*="bg-black"], main a[class*="bg-black"] {
+  background: #303030 !important;
+  color: #ffffff !important;
+  border-color: var(--brand) !important;
+}
+
+/* Amarelo discreto em foco, hover, seleção e links ativos. */
+main input:focus, main select:focus, main textarea:focus {
+  border-color: var(--brand-strong) !important;
+  box-shadow: 0 0 0 3px rgb(216 181 43 / .14) !important;
+}
+main button:focus-visible, main a:focus-visible,
+main input:focus-visible, main select:focus-visible, main textarea:focus-visible {
+  outline: 2px solid var(--brand-strong) !important;
+  outline-offset: 2px;
+}
+main a:not([class*="bg-"]):hover {
+  text-decoration-color: var(--brand-strong);
+}
+main tbody tr:hover {
+  background: color-mix(in srgb, var(--brand-soft) 72%, transparent) !important;
+}
+
+/* Tipografia, bordas e controles acompanham os neutros do tema. */
+main [class*="text-gray-950"], main [class*="text-gray-900"],
+main [class*="text-slate-950"], main [class*="text-slate-900"],
+main [class*="text-gray-800"], main [class*="text-gray-700"],
+main [class*="text-slate-800"], main [class*="text-slate-700"] {
+  color: var(--foreground) !important;
+}
+main [class*="text-gray-600"], main [class*="text-gray-500"],
+main [class*="text-slate-600"], main [class*="text-slate-500"] {
+  color: var(--muted) !important;
+}
+.dark main [class*="dark:text-gray-100"], .dark main [class*="dark:text-white"],
+.dark main [class*="dark:text-gray-200"] { color: var(--foreground) !important; }
+.dark main [class*="dark:text-gray-400"], .dark main [class*="dark:text-gray-300"] {
+  color: var(--muted) !important;
+}
+main input, main select, main textarea {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border-strong) !important;
+}
+main thead { background: var(--surface-muted) !important; color: var(--muted) !important; }
+main th, main td, main tr { border-color: var(--border) !important; }
+
+/* Login acompanha a identidade sem amarelo dominante. */
+.seice-login { background: var(--background) !important; }
+.seice-login > div:first-child { background: #303030 !important; }
+.seice-login > section, .seice-login form {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--foreground) !important;
+}
+.seice-login header { background: #303030 !important; }
+.seice-login header h1, .seice-login header h2,
+.seice-login header p { color: #ffffff !important; }
+.seice-login header [class*="bg-[#f5cf24]"] {
+  background: var(--brand) !important;
+  color: #252525 !important;
+}
+.seice-login form h2, .seice-login form label span { color: var(--foreground) !important; }
+.seice-login form p { color: var(--muted) !important; }
+.seice-login input {
+  background: var(--surface-muted) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border-strong) !important;
+}
+.seice-login button[type="submit"] {
+  background: #303030 !important;
+  color: #ffffff !important;
+  border: 1px solid var(--brand) !important;
+}
+.seice-login button[type="submit"]:hover { background: #454545 !important; }
+.dark .seice-login form > div:last-of-type {
+  background: var(--surface-muted) !important;
+  border-color: var(--border) !important;
+  color: var(--muted) !important;
+}
+.seice-login a { color: var(--foreground) !important; }
