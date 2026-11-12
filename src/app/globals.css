@@ -1390,7 +1390,7 @@ aside#navegacao-principal > div:last-child button:hover {
   background: var(--surface-muted) !important;
 }
 
-/* Identificação dos equipamentos: etiqueta patrimonial legível e padronizada. */
+/* Identificação dos equipamentos: integrada ao fundo da página nos dois temas. */
 .equipment-identity {
   display: inline-flex;
   align-items: center;
@@ -1398,17 +1398,17 @@ aside#navegacao-principal > div:last-child button:hover {
   max-width: 100%;
   margin-top: 5px !important;
   padding: 5px 9px;
-  border: 1px solid #e7dfc2;
+  border: 1px solid transparent;
   border-radius: 6px;
-  background: #faf7eb;
-  color: #292929 !important;
+  background: var(--background) !important;
+  color: var(--foreground) !important;
   font-size: 13px;
   font-weight: 750 !important;
   line-height: 1.35;
   letter-spacing: -.01em;
 }
 .dark .equipment-identity {
-  border-color: #5a502e;
-  background: #35301f;
-  color: #f0e3ae !important;
+  border-color: transparent;
+  background: var(--background) !important;
+  color: var(--foreground) !important;
 }
