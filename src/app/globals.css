@@ -888,9 +888,11 @@ main button[class*="bg-black"], main a[class*="bg-black"] {
   color: #fff !important;
   border-color: var(--brand-strong) !important;
 }
+/* Superfícies brancas permanecem neutras no tema escuro; amarelo é apenas acento. */
 .dark main button[class*="bg-white"], .dark main a[class*="bg-white"] {
-  background: var(--brand) !important;
-  color: var(--brand-ink) !important;
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border) !important;
 }
 
 /* Campos, foco e tabelas */
