@@ -191,7 +191,7 @@ export default function RelatorioGastosPage() {
           <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div>
               <Link href="/" className="inline-flex items-center gap-2 rounded-full border border-gray-300 bg-gray-100 px-3 py-1.5 text-xs font-semibold text-gray-700 transition hover:bg-gray-200 dark:border-[#555555] dark:bg-[#3a3a3a] dark:text-gray-200 dark:hover:bg-[#454545]">← Dashboard</Link>
-              <p className="mt-5 text-xs font-bold uppercase tracking-[.2em] text-gray-100">Financeiro · Gestão de ativos</p>
+              <p className="mt-5 text-xs font-bold uppercase tracking-[.2em] text-gray-500 dark:text-gray-400">Financeiro · Gestão de ativos</p>
               <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Relatório de gastos</h1>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-600 dark:text-gray-300">Acompanhe separadamente os gastos da equipe interna e os custos de assistência técnica externa.</p>
             </div>
