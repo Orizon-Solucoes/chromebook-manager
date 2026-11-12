@@ -5,8 +5,8 @@ import "./responsive.css";
 import AuthGuard from "@/components/AuthGuard";
 
 export const metadata: Metadata = {
-  title: "Chromebook Manager | SEICE",
-  description: "Sistema de gerenciamento de equipamentos de TI do Colégio SEICE.",
+  title: "SEICE Manager | Gestão de TI",
+  description: "Plataforma de gestão de patrimônio e suporte de tecnologia do Colégio SEICE.",
 };
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
           fallback={
             <main className="min-h-screen bg-gray-100 p-8 dark:bg-[#252525]">
               <p className="text-gray-600 dark:text-gray-300">
-                Carregando Chromebook Manager...
+                Carregando SEICE Manager...
               </p>
             </main>
           }

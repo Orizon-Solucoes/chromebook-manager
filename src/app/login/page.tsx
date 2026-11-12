@@ -45,17 +45,17 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-10 dark:bg-[#252525]">
-      <section className="w-full max-w-md overflow-hidden rounded-xl border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-[#30302f]">
-        <header className="border-b border-gray-300 bg-gray-200 px-8 py-8 dark:border-gray-600 dark:bg-[#3a3a38]">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-lg font-bold text-amber-300">
+    <main className="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-10 dark:bg-[#191d19]">
+      <section className="w-full max-w-md overflow-hidden rounded-2xl border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-[#222821]">
+        <header className="border-b border-gray-300 bg-gray-100 px-8 py-8 dark:border-gray-600 dark:bg-[#282f28]">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl border border-amber-600 bg-amber-400 text-lg font-extrabold text-gray-900">
             CM
           </div>
           <p className="mb-1 text-center text-xs font-bold uppercase tracking-[0.18em] text-gray-600 dark:text-gray-300">
             SEICE · Tecnologia
           </p>
           <h1 className="text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
-            Chromebook Manager
+            SEICE Manager
           </h1>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
             Entre com sua conta para continuar

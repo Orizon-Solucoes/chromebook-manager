@@ -227,7 +227,7 @@ export default function AuthGuard({
             </button>
 
             <span className="truncate text-sm font-semibold">
-              Chromebook Manager
+              SEICE Manager
             </span>
           </header>
 

@@ -221,9 +221,19 @@ export default function Sidebar({
       }
     >
       <div className="border-b border-gray-300 bg-[#e2e2e2] px-5 py-6 dark:border-[#555555] dark:bg-[#292929]">
-        <h1 className="text-base font-semibold text-gray-900 dark:text-gray-100">
-          Chromebook Manager
-        </h1>
+        <div className="flex items-center gap-3">
+          <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#b58a36] text-sm font-extrabold tracking-tight text-[#211d15] shadow-sm">
+            SM
+          </span>
+          <div className="min-w-0">
+            <h1 className="truncate text-[15px] font-bold tracking-tight text-gray-900 dark:text-gray-100">
+              SEICE Manager
+            </h1>
+            <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.13em] text-gray-500 dark:text-gray-400">
+              Gestão de tecnologia
+            </p>
+          </div>
+        </div>
       </div>
 
       {podeAlternarUnidade && (
