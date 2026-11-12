@@ -1412,3 +1412,19 @@ aside#navegacao-principal > div:last-child button:hover {
   background: var(--background) !important;
   color: var(--foreground) !important;
 }
+
+/* Fundos teal legados não devem virar amarelo: manter superfícies neutras em todas as páginas. */
+main [class*="bg-teal-"]:not(button):not(a),
+main [class*="bg-cyan-"]:not(button):not(a) {
+  background-color: var(--surface-muted) !important;
+  background-image: none !important;
+}
+main tbody tr:hover,
+main tbody tr[class*="hover:bg-teal-"]:hover {
+  background-color: var(--surface-muted) !important;
+}
+.dark main [class*="bg-teal-"]:not(button):not(a),
+.dark main [class*="bg-cyan-"]:not(button):not(a) {
+  background-color: var(--surface-muted) !important;
+}
+
