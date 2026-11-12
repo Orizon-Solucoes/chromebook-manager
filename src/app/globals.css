@@ -699,3 +699,300 @@ main .status-badge--para-descarte {
     min-width: 640px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   IDENTIDADE VISUAL · PALETA AZUL INSTITUCIONAL
+   Interface administrativa simples, com tema claro e escuro.
+   -------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+  --background: #EEF4ED;
+  --foreground: #0B2545;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-muted: #e5ece7;
+  --border: #d5dfda;
+  --border-strong: #b8c8c0;
+  --muted: #587087;
+  --sidebar: #0B2545;
+  --sidebar-foreground: #EEF4ED;
+  --brand: #134074;
+  --brand-strong: #13315C;
+  --brand-soft: #e6edf4;
+  --brand-ink: #ffffff;
+  --success: #28734a;
+  --success-soft: #e8f4eb;
+  --warning: #956515;
+  --warning-soft: #fff3d7;
+  --danger: #b43c36;
+  --danger-soft: #fcebea;
+  --info: #134074;
+  --info-soft: #e6edf4;
+  --radius-panel: 12px;
+  --shadow-card: 0 1px 3px rgb(11 37 69 / .07);
+  --shadow-float: 0 12px 32px rgb(11 37 69 / .16);
+  --seice-ink: #0B2545;
+  --seice-paper: #EEF4ED;
+  --seice-line: #d5dfda;
+  --seice-muted: #587087;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #07182b;
+  --foreground: #EEF4ED;
+  --surface: #0B2545;
+  --surface-raised: #13315C;
+  --surface-muted: #102c4c;
+  --border: #294665;
+  --border-strong: #496783;
+  --muted: #8DA9C4;
+  --sidebar: #061426;
+  --sidebar-foreground: #EEF4ED;
+  --brand: #8DA9C4;
+  --brand-strong: #a8bfd4;
+  --brand-soft: #173654;
+  --brand-ink: #0B2545;
+  --success: #8ac49b;
+  --success-soft: #183a2b;
+  --warning: #e5bd69;
+  --warning-soft: #40351e;
+  --danger: #ed9b95;
+  --danger-soft: #432725;
+  --info: #8DA9C4;
+  --info-soft: #173654;
+  --shadow-card: 0 1px 3px rgb(0 0 0 / .2);
+  --shadow-float: 0 14px 36px rgb(0 0 0 / .35);
+  --seice-ink: #EEF4ED;
+  --seice-paper: #07182b;
+  --seice-line: #294665;
+  --seice-muted: #8DA9C4;
+}
+
+body, main {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+h1, h2, h3, h4 { color: var(--foreground); }
+
+/* Superfícies e contêineres */
+main [class~="bg-white"],
+main [class*="bg-[#"],
+main [class*="dark:bg-[#"] { background-color: var(--surface) !important; }
+
+main [class*="bg-gray-50"], main [class*="bg-gray-100"],
+main [class*="bg-slate-50"], main [class*="bg-zinc-50"] {
+  background-color: var(--background) !important;
+}
+main [class*="bg-gray-200"], main [class*="bg-gray-300"],
+main [class*="bg-slate-100"], main [class*="bg-zinc-100"] {
+  background-color: var(--surface-muted) !important;
+}
+.dark main [class*="dark:bg-gray-50"], .dark main [class*="dark:bg-gray-100"],
+.dark main [class*="dark:bg-gray-200"], .dark main [class*="dark:bg-gray-700"],
+.dark main [class*="dark:bg-gray-800"], .dark main [class*="dark:bg-slate-800"] {
+  background-color: var(--surface-muted) !important;
+}
+.dark main [class*="dark:bg-[#"] { background-color: var(--surface) !important; }
+
+main article, main section.rounded-xl, main section.rounded-2xl,
+main [class*="rounded-xl"][class*="border"],
+main [class*="rounded-2xl"][class*="border"] {
+  border-color: var(--border) !important;
+}
+main article, main section.rounded-xl, main section.rounded-2xl {
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-card) !important;
+}
+main [class*="rounded-3xl"], main [class*="rounded-2xl"] { border-radius: 12px !important; }
+main [class*="shadow-2xl"], main [class*="shadow-xl"],
+main [class*="shadow-lg"], main [class*="shadow-md"] {
+  box-shadow: var(--shadow-card) !important;
+}
+main > div > header, main > header, main header.rounded-xl, main header.rounded-2xl {
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-card) !important;
+}
+main header[class*="bg-gradient"] {
+  background: var(--brand-strong) !important;
+  color: #fff !important;
+  border-color: var(--brand-strong) !important;
+}
+main header[class*="bg-gradient"] h1,
+main header[class*="bg-gradient"] h2,
+main header[class*="bg-gradient"] h3,
+main header[class*="bg-gradient"] p,
+main header[class*="bg-gradient"] span { color: #fff !important; }
+
+main [class*="text-gray-950"], main [class*="text-gray-900"],
+main [class*="text-slate-950"], main [class*="text-slate-900"],
+main [class*="text-gray-800"], main [class*="text-gray-700"],
+main [class*="text-slate-800"], main [class*="text-slate-700"] {
+  color: var(--foreground) !important;
+}
+main [class*="text-gray-600"], main [class*="text-gray-500"],
+main [class*="text-slate-600"], main [class*="text-slate-500"] {
+  color: var(--muted) !important;
+}
+.dark main [class*="dark:text-gray-100"], .dark main [class*="dark:text-white"],
+.dark main [class*="dark:text-gray-200"] { color: var(--foreground) !important; }
+.dark main [class*="dark:text-gray-400"], .dark main [class*="dark:text-gray-300"] {
+  color: var(--muted) !important;
+}
+
+/* Ações principais: azul no claro e azul-claro no escuro. */
+main button[class*="bg-amber-"], main button[class*="bg-yellow-"],
+main button[class*="bg-teal-"], main button[class*="bg-cyan-"],
+main button[class*="bg-sky-"], main button[class*="bg-blue-"],
+main button[class*="bg-emerald-"], main button[class*="bg-green-"],
+main a[class*="bg-amber-"], main a[class*="bg-yellow-"],
+main a[class*="bg-teal-"], main a[class*="bg-cyan-"],
+main a[class*="bg-sky-"], main a[class*="bg-blue-"],
+main a[class*="bg-emerald-"], main a[class*="bg-green-"],
+main button[class*="bg-gradient"], main a[class*="bg-gradient"] {
+  background: var(--brand) !important;
+  color: var(--brand-ink) !important;
+  border-color: var(--brand) !important;
+  box-shadow: none !important;
+}
+main button[class*="bg-amber-"]:hover, main button[class*="bg-yellow-"]:hover,
+main button[class*="bg-teal-"]:hover, main button[class*="bg-cyan-"]:hover,
+main button[class*="bg-sky-"]:hover, main button[class*="bg-blue-"]:hover,
+main button[class*="bg-emerald-"]:hover, main button[class*="bg-green-"]:hover,
+main a[class*="bg-amber-"]:hover, main a[class*="bg-yellow-"]:hover,
+main a[class*="bg-teal-"]:hover, main a[class*="bg-cyan-"]:hover,
+main a[class*="bg-sky-"]:hover, main a[class*="bg-blue-"]:hover,
+main a[class*="bg-emerald-"]:hover, main a[class*="bg-green-"]:hover {
+  background: var(--brand-strong) !important;
+  color: #fff !important;
+}
+.dark main button[class*="bg-amber-"]:hover, .dark main button[class*="bg-yellow-"]:hover,
+.dark main button[class*="bg-teal-"]:hover, .dark main button[class*="bg-cyan-"]:hover,
+.dark main button[class*="bg-sky-"]:hover, .dark main button[class*="bg-blue-"]:hover,
+.dark main button[class*="bg-emerald-"]:hover, .dark main button[class*="bg-green-"]:hover,
+.dark main a[class*="bg-amber-"]:hover, .dark main a[class*="bg-yellow-"]:hover,
+.dark main a[class*="bg-teal-"]:hover, .dark main a[class*="bg-cyan-"]:hover,
+.dark main a[class*="bg-sky-"]:hover, .dark main a[class*="bg-blue-"]:hover,
+.dark main a[class*="bg-emerald-"]:hover, .dark main a[class*="bg-green-"]:hover {
+  background: var(--brand-strong) !important;
+  color: #0B2545 !important;
+}
+main button[class*="bg-gray-900"], main a[class*="bg-gray-900"],
+main button[class*="bg-black"], main a[class*="bg-black"] {
+  background: var(--brand-strong) !important;
+  color: #fff !important;
+  border-color: var(--brand-strong) !important;
+}
+.dark main button[class*="bg-white"], .dark main a[class*="bg-white"] {
+  background: var(--brand) !important;
+  color: var(--brand-ink) !important;
+}
+
+/* Campos, foco e tabelas */
+main input, main select, main textarea {
+  max-width: 100%;
+  background: var(--surface) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+main input:focus, main select:focus, main textarea:focus {
+  outline: none !important;
+  border-color: #134074 !important;
+  box-shadow: 0 0 0 3px rgb(19 64 116 / .14) !important;
+}
+.dark main input:focus, .dark main select:focus, .dark main textarea:focus {
+  border-color: #8DA9C4 !important;
+  box-shadow: 0 0 0 3px rgb(141 169 196 / .18) !important;
+}
+main button, main a[class*="rounded"][class*="px-"] {
+  border-radius: 8px;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+main button:focus-visible, main a:focus-visible,
+main input:focus-visible, main select:focus-visible, main textarea:focus-visible {
+  outline: 2px solid var(--brand) !important;
+  outline-offset: 2px;
+}
+main table { width: 100%; border-collapse: separate; border-spacing: 0; color: var(--foreground); }
+main thead { background: var(--surface-muted) !important; color: var(--muted) !important; }
+main th { color: var(--muted) !important; font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+main th, main td, main tr { border-color: var(--border) !important; }
+main tbody tr:hover { background: color-mix(in srgb, var(--brand-soft) 55%, transparent) !important; }
+main hr { border-color: var(--border); }
+
+/* Menu lateral e alternância de tema */
+aside {
+  background: var(--sidebar) !important;
+  color: var(--sidebar-foreground) !important;
+  border-color: var(--border) !important;
+  box-shadow: none !important;
+}
+aside > div:first-child { background: var(--sidebar) !important; border-color: var(--border) !important; }
+aside nav section > p { color: #8DA9C4 !important; }
+aside a { border-radius: 8px !important; }
+aside a[aria-current="page"] {
+  background: #134074 !important;
+  color: #fff !important;
+  border-color: #8DA9C4 !important;
+  box-shadow: none !important;
+}
+aside a[aria-current="page"] span { color: #fff !important; }
+aside a:hover, aside button:hover { background: #13315C !important; color: #fff !important; }
+aside a[aria-current="page"]:hover { background: #13315C !important; }
+aside [class*="bg-[#f5cf24]"] { background: #8DA9C4 !important; color: #0B2545 !important; }
+aside select { background: #13315C !important; color: #EEF4ED !important; border-color: #496783 !important; }
+aside button { color: #EEF4ED; }
+
+/* Cores de status permanecem semânticas. */
+main [class*="bg-emerald-"], main [class*="bg-green-"], main [class*="bg-lime-"] {
+  background-color: var(--success-soft) !important; background-image: none !important;
+}
+main [class*="text-emerald-"], main [class*="text-green-"], main [class*="text-lime-"] { color: var(--success) !important; }
+main [class*="bg-orange-"], main [class*="bg-amber-"]:not(button):not(a),
+main [class*="bg-yellow-"]:not(button):not(a) { background-color: var(--warning-soft) !important; }
+main [class*="text-orange-"], main [class*="text-amber-"], main [class*="text-yellow-"] { color: var(--warning) !important; }
+main [class*="bg-rose-"], main [class*="bg-red-"] { background-color: var(--danger-soft) !important; }
+main [class*="text-rose-"], main [class*="text-red-"] { color: var(--danger) !important; }
+main [class*="bg-sky-"], main [class*="bg-blue-"], main [class*="bg-teal-"], main [class*="bg-cyan-"] {
+  background-color: var(--info-soft) !important; background-image: none !important;
+}
+main [class*="text-sky-"], main [class*="text-blue-"], main [class*="text-teal-"], main [class*="text-cyan-"] { color: var(--info) !important; }
+.dark main [class*="bg-violet-"], .dark main [class*="bg-purple-"], .dark main [class*="bg-indigo-"] { background-color: #382d43 !important; }
+.dark main [class*="text-violet-"], .dark main [class*="text-purple-"], .dark main [class*="text-indigo-"] { color: #d2b7e8 !important; }
+
+.status-badge--disponivel { background: var(--success-soft) !important; color: var(--success) !important; }
+.status-badge--em-uso { background: var(--info-soft) !important; color: var(--info) !important; }
+.status-badge--reserva { background: var(--brand-soft) !important; color: var(--brand) !important; }
+.status-badge--em-reparo { background: var(--warning-soft) !important; color: var(--warning) !important; }
+.status-badge--para-descarte { background: var(--surface-muted) !important; color: var(--muted) !important; }
+
+/* Login: mesma paleta, formulário claro e legível nos dois temas. */
+.seice-login { background: var(--background) !important; }
+.seice-login > div:first-child { background: #134074 !important; }
+.seice-login > section { background: var(--surface) !important; border-color: var(--border) !important; box-shadow: var(--shadow-float) !important; }
+.seice-login header { background: #0B2545 !important; }
+.seice-login header [class*="bg-[#f5cf24]"] { background: #8DA9C4 !important; color: #0B2545 !important; }
+.seice-login header p[class*="text-[#f5cf24]"] { color: #8DA9C4 !important; }
+.seice-login form { background: var(--surface) !important; }
+.seice-login form h2, .seice-login form label span { color: var(--foreground) !important; }
+.seice-login form p, .seice-login form label span span { color: var(--muted) !important; }
+.seice-login input { background: var(--background) !important; color: var(--foreground) !important; border-color: var(--border-strong) !important; }
+.seice-login button[type="submit"] { background: #134074 !important; color: #fff !important; border-color: #134074 !important; }
+.seice-login button[type="submit"]:hover { background: #13315C !important; }
+.seice-login form > div:last-of-type { background: var(--surface-muted) !important; border-color: var(--border) !important; color: var(--muted) !important; }
+.seice-login form > div:last-of-type strong { color: var(--foreground) !important; }
+.seice-login a { color: var(--brand) !important; }
+.dark .seice-login form > div:last-of-type { background: var(--surface-muted) !important; }
+
+@media (max-width: 767px) {
+  main > div > header, main > header, main header.rounded-xl, main header.rounded-2xl { border-radius: 10px !important; }
+  main article, main section.rounded-xl, main section.rounded-2xl { border-radius: 10px !important; }
+}
+
