@@ -82,7 +82,7 @@ export default function AlterarSenhaPage() {
 
           <div className="flex flex-col-reverse gap-3 border-t border-[#e8e8e2] pt-5 dark:border-[#3b3d36] sm:flex-row sm:justify-end">
             <Link href="/" className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#dcdcd5] px-5 text-sm font-semibold text-[#55564f] transition hover:bg-[#f5f5f1] dark:border-[#4a4d44] dark:text-[#d8d9d1] dark:hover:bg-[#30332c]">Voltar</Link>
-            <button type="submit" disabled={carregando} className="min-h-11 rounded-lg bg-[#292a26] px-5 text-sm font-semibold text-white transition hover:bg-[#41423c] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#e7e8e1] dark:text-[#252620] dark:hover:bg-white">{carregando ? "Salvando..." : "Salvar nova senha"}</button>
+            <button type="submit" disabled={carregando} className="min-h-11 rounded-lg bg-gray-900 px-5 text-sm font-semibold text-white transition hover:bg-[#41423c] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#e7e8e1] dark:text-[#252620] dark:hover:bg-white">{carregando ? "Salvando..." : "Salvar nova senha"}</button>
           </div>
         </form>
       </section>

@@ -51,7 +51,7 @@ export default function LoginPage() {
       <section className="w-full max-w-[430px] overflow-hidden rounded-2xl border border-[#e2e2dc] bg-white shadow-[0_18px_55px_rgba(25,26,22,0.09)] dark:border-[#3b3d36] dark:bg-[#242620]">
         <header className="border-b border-[#e8e8e2] px-8 pb-7 pt-8 dark:border-[#3b3d36]">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#292a26] text-sm font-extrabold tracking-tight text-white dark:bg-[#e7e8e1] dark:text-[#252620]">SE</div>
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-900 text-sm font-extrabold tracking-tight text-white dark:bg-[#e7e8e1] dark:text-[#252620]">SE</div>
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[.14em] text-[#77786f] dark:text-[#a9aea4]">Colégio SEICE</p>
               <p className="mt-0.5 text-sm font-semibold text-[#34352f] dark:text-[#e5e6df]">Tecnologia e infraestrutura</p>
@@ -79,7 +79,7 @@ export default function LoginPage() {
 
           {erro && <div role="alert" className="rounded-lg border border-[#e7c8c4] bg-[#fff4f2] px-4 py-3 text-sm text-[#a33d35] dark:border-[#68413d] dark:bg-[#382522] dark:text-[#f0aaa3]">{erro}</div>}
 
-          <button type="submit" disabled={carregando} className="flex min-h-12 w-full items-center justify-center rounded-lg bg-[#292a26] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#41423c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#77786f] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#e7e8e1] dark:text-[#252620] dark:hover:bg-white">
+          <button type="submit" disabled={carregando} className="flex min-h-12 w-full items-center justify-center rounded-lg bg-gray-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#41423c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#77786f] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#e7e8e1] dark:text-[#252620] dark:hover:bg-white">
             {carregando ? "Verificando acesso..." : "Entrar"}
           </button>
 
