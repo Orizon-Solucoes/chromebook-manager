@@ -109,9 +109,13 @@ export default function Sidebar({ mobileOpen, onClose }: { mobileOpen: boolean; 
 
       <div className="border-t border-white/10 p-3">
         <div className="mb-3 flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f5cf24] text-sm font-bold text-[#242318]">{(nome.trim()[0] || "U").toUpperCase()}</div>
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-white">{(nome.trim()[0] || "U").toUpperCase()}</div>
           <div className="min-w-0"><p className="truncate text-sm font-semibold text-white">{nome}</p><p className="mt-0.5 text-[11px] text-white/50">{nomePerfil}</p></div>
         </div>
+        <Link href="/conta/senha" onClick={onClose} className="mb-3 flex min-h-10 items-center gap-2 rounded-lg border border-white/10 px-3 text-xs font-semibold text-white/70 transition hover:border-white/20 hover:bg-white/8 hover:text-white">
+          <span aria-hidden="true">⌑</span>
+          Alterar senha
+        </Link>
         {erro && <p role="alert" className="mb-2 rounded-lg bg-red-950/40 px-3 py-2 text-xs text-red-200">{erro}</p>}
         <div className="flex items-center gap-2">
           <button type="button" onClick={sair} disabled={saindo} title="Sair da conta" className="flex h-10 flex-1 items-center justify-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-semibold text-white/65 transition hover:border-white/20 hover:bg-white/8 hover:text-white disabled:opacity-50">
